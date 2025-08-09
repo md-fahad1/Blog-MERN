@@ -75,6 +75,17 @@ export default function DashPosts() {
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <>
+          {currentUser.isAdmin && (
+            <Link to={"/create-post"}>
+              <Button
+                type="button"
+                gradientDuoTone="cyanToBlue"
+                className="min-w-12 mb-3"
+              >
+                Create a post
+              </Button>
+            </Link>
+          )}
           <Table hoverable className="shadow-md">
             <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>

@@ -121,30 +121,36 @@ export default function DashboardComp() {
         </div>
       </div>
       <div className="flex flex-wrap gap-4 py-3 mx-auto justify-center">
-        <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
-          <div className="flex justify-between  p-3 text-sm font-semibold">
+        <div className="flex flex-col w-full md:w-1/2 shadow-md p-2 rounded-md dark:bg-gray-800">
+          <div className="flex justify-between  p-2 text-sm font-semibold">
             <h1 className="text-center p-2">Recent users</h1>
-            <Button outline gradientDuoTone="purpleToPink">
+            <Button>
               <Link to={"/dashboard?tab=users"}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
+          <Table hoverable className="border-2 border-cyan-900">
             <Table.Head>
-              <Table.HeadCell>User image</Table.HeadCell>
-              <Table.HeadCell>Username</Table.HeadCell>
+              <Table.HeadCell className="border border-cyan-900">
+                User image
+              </Table.HeadCell>
+              <Table.HeadCell className="border border-cyan-900">
+                Username
+              </Table.HeadCell>
             </Table.Head>
             {users &&
               users.map((user) => (
                 <Table.Body key={user._id} className="divide-y">
-                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell>
+                  <Table.Row className="bg-gray-50 border border-cyan-900 dark:border-gray-700 dark:bg-gray-800">
+                    <Table.Cell className="border border-cyan-900">
                       <img
                         src={user.profilePicture}
                         alt="user"
                         className="w-10 h-10 rounded-full bg-gray-500"
                       />
                     </Table.Cell>
-                    <Table.Cell>{user.username}</Table.Cell>
+                    <Table.Cell className="border border-cyan-900">
+                      {user.username}
+                    </Table.Cell>
                   </Table.Row>
                 </Table.Body>
               ))}
@@ -153,32 +159,38 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent comments</h1>
-            <Button outline gradientDuoTone="purpleToPink">
+            <Button>
               <Link to={"/dashboard?tab=comments"}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
+          <Table hoverable className="border-2 border-cyan-900">
             <Table.Head>
-              <Table.HeadCell>Comment content</Table.HeadCell>
-              <Table.HeadCell>Likes</Table.HeadCell>
+              <Table.HeadCell className="border border-cyan-900">
+                Comment content
+              </Table.HeadCell>
+              <Table.HeadCell className="border border-cyan-900">
+                Likes
+              </Table.HeadCell>
             </Table.Head>
             {comments &&
               comments.map((comment) => (
-                <Table.Body key={comment._id} className="divide-y">
-                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell className="w-96">
+                <Table.Body key={comment._id} className="">
+                  <Table.Row className="bg-gray-50 border border-cyan-900 dark:border-gray-700 dark:bg-gray-800">
+                    <Table.Cell className="w-96 border border-cyan-900">
                       <p className="line-clamp-2">{comment.content}</p>
                     </Table.Cell>
-                    <Table.Cell>{comment.numberOfLikes}</Table.Cell>
+                    <Table.Cell className="border border-cyan-900">
+                      {comment.numberOfLikes}
+                    </Table.Cell>
                   </Table.Row>
                 </Table.Body>
               ))}
           </Table>
         </div>
-        <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
+        <div className="flex flex-col w-full md:w-full shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent posts</h1>
-            <Button outline gradientDuoTone="purpleToPink">
+            <Button>
               <Link to={"/dashboard?tab=posts"}>See all</Link>
             </Button>
           </div>
