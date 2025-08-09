@@ -123,7 +123,7 @@ const VisitedPlace = () => {
               />
               <div className="p-2">
                 <motion.h3
-                  className="text-center text-xl font-semibold text-gray-900 mb-1"
+                  className="text-center text-xl font-semibold font-fenix text-[#F26259] mb-1"
                   whileHover={{ color: "#2563EB" }}
                 >
                   {place.name}

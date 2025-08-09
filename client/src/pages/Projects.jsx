@@ -136,8 +136,8 @@ const Projects = () => {
   }, []);
 
   return (
-    <section className="min-h-screen" id="projects">
-      <h1 className="text-center font-bold my-6 text-3xl">
+    <section className="min-h-screen font-fenix" id="projects">
+      <h1 className="text-center font-fenix font-bold my-6 text-3xl">
         Projects with demo
       </h1>
       <div className="container mx-auto px-12">

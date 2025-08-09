@@ -126,12 +126,12 @@ export default function Home() {
   return (
     <div className="bg-[#FCFCFC] dark:bg-[#10172A] min-h-[100vh]">
       <div className="flex min-h-[90vh] items-center">
-        <div className="flex  flex-col-reverse md:flex-row md:px-3 bg-[#F1EDEC] w-[80%]  h-[70vh] rounded-md  mx-auto  ">
+        <div className="flex  flex-col-reverse md:flex-row md:px-3 bg-[#EEDCF5] w-[80%]  h-[70vh] rounded-md  mx-auto  ">
           <div className=" w-full md:w-2/3 flex flex-col gap-4 p-3 md:p-10 2xl:pl-20 2xl:pt-20 2xl:pr-10">
             <span className="bg-[#FFCEA3] rounded-md py-1 px-3 w-20 font-semibold text-gray-700">
               Lifestyle
             </span>
-            <h1 className="text-xl dark:text-gray-700 2xl:text-6xl font-bold lg:text-4xl">
+            <h1 className="text-xl font-fenix dark:text-gray-700 2xl:text-6xl font-bold lg:text-4xl">
               Welcome to Fahad Blog
             </h1>
             <p className="text-gray-500 lg:text-xl 2xl:text-3xl font-semibold sm:text-sm">
@@ -162,7 +162,7 @@ export default function Home() {
         <CallToAction />
       </div> */}
       <div className="md:px-28 mt-5">
-        <h2 className="text-2xl font-bold text-center md:text-left ">
+        <h2 className="text-2xl font-fenix font-bold text-center md:text-left ">
           Visited Places
         </h2>
         <VisitedPlace />
@@ -171,7 +171,7 @@ export default function Home() {
       <div className="max-w-full mx-auto p-3 flex flex-col py-7">
         {posts && posts.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-bold text-center md:text-left md:px-28">
+            <h2 className="text-2xl font-bold font-fenix text-center md:text-left md:px-28">
               Latest Posts
             </h2>
             <div className=" md:px-28  px-2 gap-5">

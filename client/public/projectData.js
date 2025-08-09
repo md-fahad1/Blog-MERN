@@ -7,7 +7,7 @@ const projectData = [
     languages: ["React", "Express", "NodeJs", "MongoDB"],
     image: "/project1.png", // Make sure the image is placed correctly in public/images
     githubLink: "https://github.com/mdfahad-khan/Ecommerce-MERN",
-    liveLink: "https://ecommerce-mern-lovat-xi.vercel.app/",
+    liveLink: "https://ecommerce-gadget360.vercel.app/",
     icons: {
       React: "FaReact",
       Express: "SiExpress",
@@ -15,6 +15,7 @@ const projectData = [
       MongoDB: "SiMongodb",
     },
   },
+
   {
     title: "Shob Artist (Client Work)",
     description:
@@ -22,7 +23,7 @@ const projectData = [
     languages: ["React", "Bootstrap", "Sass", "TailwindCSS"],
     image: "/project2.png", // Make sure the image is placed correctly in public/images
     githubLink: " ",
-    liveLink: "http://139.59.79.215/",
+    liveLink: "https://shipping-website-tcmi.vercel.app/",
     icons: {
       React: "FaReact",
       Bootstrap: "FaBootstrap",
@@ -37,7 +38,7 @@ const projectData = [
     languages: ["NextJs", "NestJs", "Postgresql", "TailwindCSS"],
     image: "/naturelease.png", // Make sure the image is placed correctly in public/images
     githubLink: "https://github.com/mdfahad-khan/NatureLease-Nextjs-Nestjs",
-    liveLink: "https://live-link2.com",
+    liveLink: "https://nature-lease-zeta.vercel.app/",
     icons: {
       NextJs: "SiNextdotjs",
       NestJs: "SiNestjs",

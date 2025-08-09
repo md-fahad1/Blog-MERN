@@ -52,7 +52,7 @@ export default function Header() {
     <Navbar className="bg-[#FCFCFC]">
       <Link
         to="/"
-        className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
+        className="self-center font-fenix font-semibold whitespace-nowrap text-sm sm:text-xl  dark:text-white"
       >
         Fahad Blog
       </Link>

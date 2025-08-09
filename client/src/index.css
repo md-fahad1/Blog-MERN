@@ -39,6 +39,11 @@ body {
 .dark .post-content a {
   color: red;
 }
+.fenix-regular {
+  font-family: "Fenix", serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 .theme-switch {
   --toggle-size: 20px;

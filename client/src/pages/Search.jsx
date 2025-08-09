@@ -101,7 +101,7 @@ export default function Search() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row font-fenix">
       <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <div className="flex items-center gap-2">
@@ -149,17 +149,17 @@ export default function Search() {
           </div>
           <button
             type="submit"
-            className="py-2 px-4 bg-purple-500 text-white font-semibold rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="py-2 px-4 border-teal-500  hover:bg-[#FFCEA3] hover:text-black bg-teal-500 text-white "
           >
             Apply Filters
           </button>
         </form>
       </div>
       <div className="w-full">
-        <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5 ">
+        <h1 className="text-3xl font-fenix font-semibold sm:border-b border-gray-500 p-3 mt-5 ">
           Posts results:
         </h1>
-        <div className="p-7 flex flex-wrap gap-4">
+        <div className="p-3  grid grid-cols-3 gap-2">
           {!loading && posts.length === 0 && (
             <p className="text-xl text-gray-500">No posts found.</p>
           )}

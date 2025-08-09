@@ -35,7 +35,6 @@ const PostCardVertical = ({ post }) => {
 
             <span className="italic text-[10px] mt-1 md:mt-1 md:text-[13px] justify-end">
               {post && (post.content.length / 1000).toFixed(0)} comments
-              {console.log(post.content.length)}
             </span>
           </div>
           <p className=" text-[12px] md:text-[18px] font-bold line-clamp-2 ">

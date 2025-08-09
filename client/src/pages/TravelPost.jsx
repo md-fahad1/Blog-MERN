@@ -101,13 +101,13 @@ const TravelPost = () => {
 
   if (!place)
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-6">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-3">
         <h2 className="text-3xl font-semibold mb-6 text-gray-700">
           Place not found
         </h2>
         <Link
           to="/"
-          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className="px-3 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
           Back to places
         </Link>
@@ -116,16 +116,16 @@ const TravelPost = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-6 md:px-12 max-w-6xl mx-auto"
+      className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-4 px-3 md:px-6 max-w-6xl mx-auto"
       variants={containerVariant}
       initial="hidden"
       animate="visible"
     >
       {/* Back Button */}
-      <motion.div variants={fadeSlide} className="mb-8">
+      <motion.div variants={fadeSlide} className="mb-3 flex flex-row gap-72">
         <Link
           to="/"
-          className="inline-flex items-center space-x-2 px-4 py-2 bg-white shadow rounded-md text-blue-600 hover:text-blue-800 hover:shadow-lg transition"
+          className="inline-flex items-center space-x-2 px-4 py-2 bg-[#FFCEA3] shadow rounded-md text-black hover:text-blue-800 hover:shadow-lg transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -142,20 +142,19 @@ const TravelPost = () => {
             />
           </svg>
           <span>Back to places</span>
+          {/* Title */}
         </Link>
+        <motion.h1
+          className="text-2xl md:text-3xl font-bold font-fenix mb-3 text-gray-900 tracking-tight"
+          variants={fadeSlide}
+        >
+          {place.name}
+        </motion.h1>
       </motion.div>
-
-      {/* Title */}
-      <motion.h1
-        className="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900 tracking-tight"
-        variants={fadeSlide}
-      >
-        {place.name}
-      </motion.h1>
 
       {/* Main Image */}
       <motion.div
-        className="rounded-2xl overflow-hidden shadow-2xl mb-10 relative group"
+        className="rounded-sm overflow-hidden shadow-2xl mb-5 relative group"
         variants={fadeSlide}
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 150, damping: 20 }}
@@ -163,21 +162,23 @@ const TravelPost = () => {
         <img
           src={place.imgSrc}
           alt={place.name}
-          className="w-full h-[400px] object-cover group-hover:brightness-90 transition"
+          className="w-full h-[500px] object-cover object-center group-hover:brightness-90 transition"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-6 text-white text-lg">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3 text-white text-lg">
           {place.description}
         </div>
       </motion.div>
 
       {/* Details */}
       <motion.section
-        className="bg-white rounded-xl shadow-lg p-8 mb-12 border border-gray-100"
+        className="bg-white rounded-sm shadow-lg p-8 mb-12 border border-gray-100"
         variants={fadeSlide}
       >
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Details</h2>
-        <p className="text-gray-700 leading-relaxed text-lg">
+        <h2 className="text-2xl font-semibold font-fenix mb-4 text-gray-800">
+          Details
+        </h2>
+        <p className="text-gray-700 font-fenix leading-relaxed text-lg">
           {place.description}
         </p>
       </motion.section>
@@ -191,7 +192,7 @@ const TravelPost = () => {
           <motion.div
             key={idx}
             variants={fadeSlide}
-            className="rounded-xl overflow-hidden shadow-md cursor-pointer group"
+            className="rounded-lg overflow-hidden shadow-md cursor-pointer group"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 150, damping: 15 }}
           >
