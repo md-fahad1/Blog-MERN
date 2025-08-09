@@ -17,6 +17,7 @@ import Search from "./pages/Search";
 import OnlyAdminPrivateRoute from "./Components/OnlyAdminPrivateRoute";
 
 import Projects from "./pages/Projects";
+import TravelPost from "./pages/TravelPost";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/travel/:travelSlug" element={<TravelPost />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/search" element={<Search />} />

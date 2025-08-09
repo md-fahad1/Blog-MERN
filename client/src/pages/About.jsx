@@ -1,41 +1,93 @@
-import { Button } from "flowbite-react";
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  offscreen: { y: 50, opacity: 0 },
+  onscreen: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", bounce: 0.3, duration: 0.8 },
+  },
+};
 
 const About = () => {
   return (
-    <div className="flex flex-col sm:flex-row p-3  justify-center items-center   text-center">
-      <div className="flex-1 justify-center flex flex-col">
-        <h2 className="text-2xl">Something About me</h2>
-        <p className="text-gray-500 my-2 text-[20px] text-justify">
-          Traveling has always been a passion of mine, and I've been fortunate
-          to visit many amazing places. I love sharing my travel experiences and
-          stories with others. This enthusiasm for exploration extends to my
-          professional life as well. Recently, I graduated with a Bachelor's
-          degree in Computer Science Engineering from American International
-          University, where I delved into algorithms, data structures, and
-          software engineering. I thrive on innovation and quick learning,
-          evident from the various projects I've undertaken. As a web
-          development enthusiast, I'm seeking dynamic roles to channel my tech
-          skills and drive innovation. I'm open to opportunities in software
-          development, system analysis, and more.
-        </p>
-      </div>
-      <div class="p-7 flex-1 relative group cursor-pointer">
-        <img src="/fahad.jpg" alt="Sreemangal" class="w-full block" />
+    <section className="max-w-7xl mx-auto p-6">
+      <h2 className="text-center text-4xl font-extrabold mb-12 text-indigo-700">
+        Something About Me
+      </h2>
 
-        <div class="absolute bottom-20 left-[55px] text-center w-10/12 bg-black cursor-pointer bg-opacity-50 text-white opacity-0 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-200 h-56">
-          <div class="py-4">
-            <h1 class="text-4xl font-bold">Sreemangal</h1>
-            <p class="text-lg">
-              Sreemangal is often referred to as the "Tea Capital of
-              Bangladesh." The rolling hills covered in tea bushes are a sight
-              to behold. A visit to a tea estate, like the Finlay Tea Estate, is
-              a must. You can learn about the tea-making process and enjoy a cup
-              of freshly brewed tea.
-            </p>
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 px-4 sm:px-0">
+        {/* Education */}
+        <motion.div
+          className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center"
+          initial="offscreen"
+          whileInView="onscreen"
+          viewport={{ once: true, amount: 0.6 }}
+          variants={cardVariants}
+        >
+          <img
+            src="/education.jpg"
+            alt="Education"
+            className="w-28 h-28 rounded-full object-cover mb-6 shadow-md"
+          />
+          <h3 className="text-2xl font-semibold mb-4 border-b-4 border-indigo-500 pb-2 w-full text-center">
+            Education
+          </h3>
+          <p className="text-gray-700 leading-relaxed text-center">
+            Graduated with a Bachelor's in Computer Science Engineering from
+            American International University. Studied algorithms, data
+            structures, and software engineering fundamentals.
+          </p>
+        </motion.div>
+
+        {/* Experience */}
+        <motion.div
+          className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center"
+          initial="offscreen"
+          whileInView="onscreen"
+          viewport={{ once: true, amount: 0.6 }}
+          variants={cardVariants}
+          transition={{ delay: 0.2 }}
+        >
+          <img
+            src="/experience.jpg"
+            alt="Experience"
+            className="w-28 h-28 rounded-full object-cover mb-6 shadow-md"
+          />
+          <h3 className="text-2xl font-semibold mb-4 border-b-4 border-indigo-500 pb-2 w-full text-center">
+            Experience
+          </h3>
+          <p className="text-gray-700 leading-relaxed text-center">
+            Worked on various web development projects using MERN stack, React,
+            and Django backend. Skilled in building scalable, maintainable,
+            user-friendly apps.
+          </p>
+        </motion.div>
+
+        {/* Hobbies & Interests */}
+        <motion.div
+          className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center"
+          initial="offscreen"
+          whileInView="onscreen"
+          viewport={{ once: true, amount: 0.6 }}
+          variants={cardVariants}
+          transition={{ delay: 0.4 }}
+        >
+          <img
+            src="/hobby.jpg"
+            alt="Hobbies and Interests"
+            className="w-28 h-28 rounded-full object-cover mb-6 shadow-md"
+          />
+          <h3 className="text-2xl font-semibold mb-4 border-b-4 border-indigo-500 pb-2 w-full text-center">
+            Hobbies & Interests
+          </h3>
+          <p className="text-gray-700 leading-relaxed text-center">
+            Traveling, photography, exploring new cultures, and keeping up with
+            tech trends are my passions.
+          </p>
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 
