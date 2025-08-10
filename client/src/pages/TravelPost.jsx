@@ -122,10 +122,13 @@ const TravelPost = () => {
       animate="visible"
     >
       {/* Back Button */}
-      <motion.div variants={fadeSlide} className="mb-3 flex flex-row gap-72">
+      <motion.div
+        variants={fadeSlide}
+        className="mb-3 flex flex-row gap-6 md:gap-72"
+      >
         <Link
           to="/"
-          className="inline-flex items-center space-x-2 px-4 py-2 bg-[#FFCEA3] shadow rounded-md text-black hover:text-blue-800 hover:shadow-lg transition"
+          className="inline-flex items-center text-[13px] md:text-lg space-x-1 md:space-x-2 px-4 py-1 md:px-4 md:py-2 bg-[#FFCEA3] shadow rounded-md text-black hover:text-blue-800 hover:shadow-lg transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +148,7 @@ const TravelPost = () => {
           {/* Title */}
         </Link>
         <motion.h1
-          className="text-2xl md:text-3xl font-bold font-fenix mb-3 text-gray-900 tracking-tight"
+          className="text-2xl md:text-3xl font-bold font-fenix mb-1 md:mb-3 text-gray-900 tracking-tight"
           variants={fadeSlide}
         >
           {place.name}
