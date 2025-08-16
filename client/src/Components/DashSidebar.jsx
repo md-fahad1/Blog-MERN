@@ -10,14 +10,14 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function DashSidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const [tab, setTab] = useState("");
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
@@ -25,6 +25,7 @@ export default function DashSidebar() {
       setTab(tabFromUrl);
     }
   }, [location.search]);
+
   const handleSignout = async () => {
     try {
       const res = await fetch("/api/user/signout", {
@@ -40,8 +41,11 @@ export default function DashSidebar() {
       console.log(error.message);
     }
   };
+
   return (
-    <Sidebar className="w-full md:w-56">
+    <Sidebar className="w-16 md:w-56">
+      {" "}
+      {/* small width on mobile */}
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1">
           {currentUser && currentUser.isAdmin && (
@@ -51,21 +55,17 @@ export default function DashSidebar() {
                 icon={HiChartPie}
                 as="div"
               >
-                Dashboard
+                <span className="hidden md:inline">Dashboard</span>
               </Sidebar.Item>
             </Link>
           )}
+
           <Link to="/dashboard?tab=profile">
-            <Sidebar.Item
-              active={tab === "profile"}
-              icon={HiUser}
-              label={currentUser.isAdmin ? "Admin" : "User"}
-              labelColor="dark"
-              as="div"
-            >
-              Profile
+            <Sidebar.Item active={tab === "profile"} icon={HiUser} as="div">
+              <span className="hidden md:inline">Profile</span>
             </Sidebar.Item>
           </Link>
+
           {currentUser.isAdmin && (
             <Link to="/dashboard?tab=posts">
               <Sidebar.Item
@@ -73,19 +73,21 @@ export default function DashSidebar() {
                 icon={HiDocumentText}
                 as="div"
               >
-                Posts
+                <span className="hidden md:inline">Posts</span>
               </Sidebar.Item>
             </Link>
           )}
+
           <Link to="/dashboard?tab=travelpost">
             <Sidebar.Item
-              active={tab === "travels"}
+              active={tab === "travelpost"}
               icon={HiDocumentText}
               as="div"
             >
-              Travel Posts
+              <span className="hidden md:inline">Travel Posts</span>
             </Sidebar.Item>
           </Link>
+
           {currentUser.isAdmin && (
             <>
               <Link to="/dashboard?tab=users">
@@ -94,26 +96,28 @@ export default function DashSidebar() {
                   icon={HiOutlineUserGroup}
                   as="div"
                 >
-                  Users
+                  <span className="hidden md:inline">Users</span>
                 </Sidebar.Item>
               </Link>
+
               <Link to="/dashboard?tab=comments">
                 <Sidebar.Item
                   active={tab === "comments"}
                   icon={HiAnnotation}
                   as="div"
                 >
-                  Comments
+                  <span className="hidden md:inline">Comments</span>
                 </Sidebar.Item>
               </Link>
             </>
           )}
+
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"
             onClick={handleSignout}
           >
-            Sign Out
+            <span className="hidden md:inline">Sign Out</span>
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
