@@ -128,7 +128,7 @@ export default function CreateTravelPost() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 px-3">
-      <div className="bg-white shadow-xl rounded-2xl p-6 w-full max-w-3xl">
+      <div className="bg-white shadow-xl rounded-2xl p-1 md:p-6 w-full max-w-3xl">
         <h1 className="text-2xl font-bold text-gray-800 mb-3">
           ✈️ Create Travel Post
         </h1>
@@ -150,8 +150,8 @@ export default function CreateTravelPost() {
           </div>
 
           {/* Location & Date */}
-          <div className="flex flex-row w-full relative gap-4">
-            <div className="flex flex-col w-1/2">
+          <div className="flex flex-col md:flex-row w-full relative gap-4">
+            <div className="flex flex-col w-full md:w-1/2">
               <label className="block mb-2 text-sm font-medium text-gray-600">
                 Location
               </label>
@@ -222,7 +222,7 @@ export default function CreateTravelPost() {
               </div>
             </div>
 
-            <div className="flex flex-col w-1/2">
+            <div className="flex flex-col w-full md:w-1/2">
               <label className="block mb-2 text-sm font-medium text-gray-600">
                 Trip Date
               </label>
