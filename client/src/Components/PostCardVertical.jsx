@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
 const PostCardVertical = ({ post }) => {
+  console.log(post);
   const truncateContent = (content, maxLength) => {
     if (!content) return ""; // Handle case where content is empty or undefined
     return content.length > maxLength

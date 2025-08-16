@@ -1,6 +1,32 @@
 // projectData.js
 const projectData = [
   {
+    title: "Ceramic and Food Products E-commerce",
+    description:
+      "I developed a modern and responsive e-commerce website for a ceramic food product brand using Next.js, Tailwind CSS, and ShadCN UI. The platform features a dynamic product catalog, high-quality image displays, and an intuitive navigation system, ensuring customers can easily browse and purchase products. With a minimalist design that highlights the elegance of ceramic foodware, the site is optimized for performance, SEO, and accessibility, delivering a seamless shopping experience across all devices.",
+    languages: ["NextJs", "TailwindCSS"],
+    image: "/ceramic.png", // Make sure the image is placed correctly in public/images
+    githubLink: "",
+    liveLink: "https://ceramicandfoodproducts.com/",
+    icons: {
+      NextJs: "SiNextdotjs",
+      TailwindCSS: "SiTailwindcss",
+    },
+  },
+  {
+    title: "GreenBusket (E-commerce)",
+    description:
+      "Green Basket is a sleek and responsive e-commerce platform for buying fresh, organic produce online. Designed for simplicity and speed, it lets customers effortlessly browse, filter, and purchase high-quality farm products with secure payments. The clean interface and smooth performance make shopping for fresh goods convenient and enjoyable on any device.",
+    languages: ["NextJs", "TailwindCSS"],
+    image: "/green.png", // Make sure the image is placed correctly in public/images
+    githubLink: "",
+    liveLink: "https://green-busket.vercel.app/",
+    icons: {
+      NextJs: "SiNextdotjs",
+      TailwindCSS: "SiTailwindcss",
+    },
+  },
+  {
     title: "E-commerce Website MERN Stack",
     description:
       "Experience a robust e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js). This website features secure user authentication, role-based access, and a comprehensive admin dashboard. Sellers can manage their products and inventory seamlessly, while buyers enjoy a smooth shopping experience with advanced search and filter options. The platform also integrates payment gateways and Cloudinary for image storage, ensuring a responsive and efficient user experience.",
@@ -15,7 +41,19 @@ const projectData = [
       MongoDB: "SiMongodb",
     },
   },
-
+  {
+    title: "FoodHub Food ordering website",
+    description:
+      "I developed a user-friendly restaurant food ordering platform that makes browsing the menu, selecting dishes, and placing orders simple and convenient. With a clean, responsive design, real-time order updates, and secure payment options, the website ensures a smooth and enjoyable online dining experience for customers on any device.",
+    languages: ["NextJs", "TailwindCSS"],
+    image: "/foodhub.png", // Make sure the image is placed correctly in public/images
+    githubLink: "",
+    liveLink: "https://food-hub-plum.vercel.app/",
+    icons: {
+      NextJs: "SiNextdotjs",
+      TailwindCSS: "SiTailwindcss",
+    },
+  },
   {
     title: "Shob Artist (Client Work)",
     description:
@@ -29,6 +67,21 @@ const projectData = [
       Bootstrap: "FaBootstrap",
       Sass: "FaSass",
       TailwindCSS: "SiTailwindcss",
+    },
+  },
+  {
+    title: "Fahad Blogs",
+    description:
+      "I developed a dynamic personal blog using the MERN stack, emphasizing both front-end interactivity with React and robust back-end functionality with Node.js and MongoDB. This project features user authentication for commenting, ensuring a secure and engaging experience. Incorporating a search functionality further enhances usability, showcasing my ability to create responsive and functional web applications.",
+    languages: ["React", "Express", "NodeJs", "MongoDB"],
+    image: "/blogs.png", // Make sure the image is placed correctly in public/images
+    githubLink: "https://github.com/mdfahad-khan/Fahad-Blog-Mern",
+    liveLink: "https://fahad-blog-npo4.onrender.com/",
+    icons: {
+      React: "FaReact",
+      Express: "SiExpress",
+      NodeJs: "FaNodeJs",
+      MongoDB: "SiMongodb",
     },
   },
   {
@@ -102,18 +155,18 @@ const projectData = [
       Oracle: "SiOracle",
     },
   },
-  {
-    title: "Dream Shop 360 (E-commerce)",
-    description:
-      "A dynamic e-commerce platform created with  CSS, JavaScript, Next.js, Revolutionizing the shopping experience by offering a comprehensive range of products, starting with clothing and electronics, with plans for expansion. Visit the project link for a firsthand demonstration",
-    languages: ["React"],
-    image: "/shop.png", // Make sure the image is placed correctly in public/images
-    githubLink: "https://github.com/mdfahad-khan/DreamShop-360",
-    liveLink: "https://dream-shop-360.vercel.app/",
-    icons: {
-      React: "FaReact",
-    },
-  },
+  // {
+  //   title: "Dream Shop 360 (E-commerce)",
+  //   description:
+  //     "A dynamic e-commerce platform created with  CSS, JavaScript, Next.js, Revolutionizing the shopping experience by offering a comprehensive range of products, starting with clothing and electronics, with plans for expansion. Visit the project link for a firsthand demonstration",
+  //   languages: ["React"],
+  //   image: "/shop.png", // Make sure the image is placed correctly in public/images
+  //   githubLink: "https://github.com/mdfahad-khan/DreamShop-360",
+  //   liveLink: "https://dream-shop-360.vercel.app/",
+  //   icons: {
+  //     React: "FaReact",
+  //   },
+  // },
   // Add more projects as needed
 ];
 

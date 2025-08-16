@@ -6,6 +6,7 @@ import Comment from "./Comment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function CommentSection({ postId }) {
+  console.log(postId);
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);

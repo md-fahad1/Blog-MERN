@@ -11,6 +11,7 @@ import Footer from "./Components/Footer";
 import PrivateRoute from "./Components/PrivateRoute";
 import ScrollToTop from "./Components/ScrollToTop";
 import CreatePost from "./pages/CreatePost";
+import CreateTravelPost from "./pages/CreateTravelPost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import Search from "./pages/Search";
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/create-travelpost" element={<CreateTravelPost />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

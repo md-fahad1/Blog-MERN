@@ -1,70 +1,63 @@
 import { Modal, Table, Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { set } from "mongoose";
+
 import { IoTrashOutline } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
-export default function DashPosts() {
-  const { currentUser } = useSelector((state) => state.user);
-  const [userPosts, setUserPosts] = useState([]);
+export default function DashTravel() {
+  const [travels, setTravels] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [postIdToDelete, setPostIdToDelete] = useState("");
+  const [travelIdToDelete, setTravelIdToDelete] = useState("");
+
+  // Fetch travels
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchTravels = async () => {
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+        const res = await fetch("/api/travel/gettravels?startIndex=0&limit=9");
         const data = await res.json();
         if (res.ok) {
-          setUserPosts(data.posts);
-          if (data.posts.length < 9) {
-            setShowMore(false);
-          }
+          setTravels(data.travels);
+          if (data.travels.length < 9) setShowMore(false);
         }
       } catch (error) {
         console.log(error.message);
       }
     };
-    if (currentUser.isAdmin) {
-      fetchPosts();
-    }
-  }, [currentUser._id]);
+    fetchTravels();
+  }, []);
 
+  // Show more travels
   const handleShowMore = async () => {
-    const startIndex = userPosts.length;
+    const startIndex = travels.length;
     try {
       const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/travel/gettravels?startIndex=${startIndex}&limit=9`
       );
       const data = await res.json();
       if (res.ok) {
-        setUserPosts((prev) => [...prev, ...data.posts]);
-        if (data.posts.length < 9) {
-          setShowMore(false);
-        }
+        setTravels((prev) => [...prev, ...data.travels]);
+        if (data.travels.length < 9) setShowMore(false);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const handleDeletePost = async () => {
+  // Delete travel
+  const handleDeleteTravel = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(
-        `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/travel/deletetravel/${travelIdToDelete}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
       } else {
-        setUserPosts((prev) =>
-          prev.filter((post) => post._id !== postIdToDelete)
+        setTravels((prev) =>
+          prev.filter((travel) => travel._id !== travelIdToDelete)
         );
       }
     } catch (error) {
@@ -74,41 +67,39 @@ export default function DashPosts() {
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser.isAdmin && userPosts.length > 0 ? (
+      {travels.length > 0 ? (
         <>
-          {currentUser.isAdmin && (
-            <Link to={"/create-post"}>
-              <Button
-                type="button"
-                gradientDuoTone="cyanToBlue"
-                className="min-w-12 mb-3"
-              >
-                Create a post
-              </Button>
-            </Link>
-          )}
+          <Link to={"/create-travelpost"}>
+            <Button
+              type="button"
+              gradientDuoTone="cyanToBlue"
+              className="min-w-12 mb-3"
+            >
+              Create a Travel Post
+            </Button>
+          </Link>
           <Table hoverable className="shadow-md">
             <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Post image</Table.HeadCell>
-              <Table.HeadCell>Post title</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
+              <Table.HeadCell>Travel image</Table.HeadCell>
+              <Table.HeadCell>Title</Table.HeadCell>
+              <Table.HeadCell>Location</Table.HeadCell>
+              <Table.HeadCell>Trip Date</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
-              <Table.HeadCell>
-                <span>Edit</span>
-              </Table.HeadCell>
+              <Table.HeadCell>Edit</Table.HeadCell>
             </Table.Head>
-            {userPosts.map((post) => (
-              <Table.Body className="divide-y">
+
+            {travels.map((travel) => (
+              <Table.Body key={travel._id} className="divide-y">
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell>
-                    {new Date(post.updatedAt).toLocaleDateString()}
+                    {new Date(travel.updatedAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/post/${post.slug}`}>
+                    <Link to={`/travel/${travel.slug}`}>
                       <img
-                        src={post.image}
-                        alt={post.title}
+                        src={travel.image}
+                        alt={travel.title}
                         className="w-20 h-10 object-cover bg-gray-500"
                       />
                     </Link>
@@ -116,27 +107,31 @@ export default function DashPosts() {
                   <Table.Cell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={`/post/${post.slug}`}
+                      to={`/travel/${travel.slug}`}
                     >
-                      {post.title}
+                      {travel.title}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{post.category}</Table.Cell>
+                  <Table.Cell>{travel.location}</Table.Cell>
                   <Table.Cell>
-                    <span
-                      onClick={() => {
-                        setShowModal(true);
-                        setPostIdToDelete(post._id);
-                      }}
-                      className="font-medium text-red-500 hover:underline cursor-pointer"
-                    >
-                      <IoTrashOutline className="text-lg cursor-pointer" />
-                    </span>
+                    {new Date(travel.tripDate).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
+                    <button
+                      onClick={() => {
+                        setShowModal(true);
+                        setTravelIdToDelete(travel._id);
+                      }}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <IoTrashOutline className="text-lg cursor-pointer" />
+                    </button>
+                  </Table.Cell>
+
+                  <Table.Cell>
                     <Link
-                      className="text-teal-500 hover:underline"
-                      to={`/update-post/${post._id}`}
+                      to={`/update-travel/${travel._id}`}
+                      className="text-teal-500 hover:text-teal-700"
                     >
                       <CiEdit className="text-lg cursor-pointer" />
                     </Link>
@@ -145,6 +140,7 @@ export default function DashPosts() {
               </Table.Body>
             ))}
           </Table>
+
           {showMore && (
             <button
               onClick={handleShowMore}
@@ -155,8 +151,9 @@ export default function DashPosts() {
           )}
         </>
       ) : (
-        <p>You have no posts yet!</p>
+        <p>You have no travel posts yet!</p>
       )}
+
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
@@ -168,10 +165,10 @@ export default function DashPosts() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
             <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this post?
+              Are you sure you want to delete this travel post?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={handleDeletePost}>
+              <Button color="failure" onClick={handleDeleteTravel}>
                 Yes, I'm sure
               </Button>
               <Button color="gray" onClick={() => setShowModal(false)}>
