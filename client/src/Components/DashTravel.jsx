@@ -17,6 +17,7 @@ export default function DashTravel() {
       try {
         const res = await fetch("/api/travel/gettravels?startIndex=0&limit=9");
         const data = await res.json();
+        console.log("data", data);
         if (res.ok) {
           setTravels(data.travels);
           if (data.travels.length < 9) setShowMore(false);
@@ -98,8 +99,8 @@ export default function DashTravel() {
                   <Table.Cell>
                     <Link to={`/travel/${travel.slug}`}>
                       <img
-                        src={travel.image}
-                        alt={travel.title}
+                        src={travel.images[0]}
+                        alt={travel.title[0]}
                         className="w-20 h-10 object-cover bg-gray-500"
                       />
                     </Link>

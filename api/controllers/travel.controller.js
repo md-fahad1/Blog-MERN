@@ -2,9 +2,11 @@ import Travel from "../models/travel.model.js";
 import { errorHandler } from "../utils/error.js";
 
 // CREATE travel post (no auth)
+// CREATE travel post (auth required for admin)
 export const createTravel = async (req, res, next) => {
   try {
     if (
+      !req.user.isAdmin ||
       !req.body.title ||
       !req.body.description ||
       !req.body.location ||
@@ -22,7 +24,10 @@ export const createTravel = async (req, res, next) => {
     const newTravel = new Travel({
       ...req.body,
       slug,
-      userId: "demo-user",
+      userId: req.user.id,
+      images: Array.isArray(req.body.images)
+        ? req.body.images
+        : [req.body.images],
     });
 
     const savedTravel = await newTravel.save();
@@ -79,6 +84,18 @@ export const getTravels = async (req, res, next) => {
     next(error);
   }
 };
+// controllers/travel.controller.js
+export const getTravel = async (req, res, next) => {
+  try {
+    const travel = await Travel.findById(req.params.travelId);
+    if (!travel) {
+      return res.status(404).json({ message: "Travel post not found" });
+    }
+    res.status(200).json({ travel });
+  } catch (error) {
+    next(error);
+  }
+};
 
 // DELETE travel (no auth)
 export const deleteTravel = async (req, res, next) => {
@@ -91,6 +108,7 @@ export const deleteTravel = async (req, res, next) => {
 };
 
 // UPDATE travel (no auth)
+// UPDATE travel
 export const updateTravel = async (req, res, next) => {
   try {
     const updatedTravel = await Travel.findByIdAndUpdate(
@@ -99,7 +117,9 @@ export const updateTravel = async (req, res, next) => {
         $set: {
           title: req.body.title,
           description: req.body.description,
-          image: req.body.image,
+          images: Array.isArray(req.body.images)
+            ? req.body.images
+            : [req.body.images], // Make sure it's array
           location: req.body.location,
           tripDate: req.body.tripDate,
           tags: req.body.tags,

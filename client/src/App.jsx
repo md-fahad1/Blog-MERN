@@ -19,6 +19,7 @@ import OnlyAdminPrivateRoute from "./Components/OnlyAdminPrivateRoute";
 
 import Projects from "./pages/Projects";
 import TravelPost from "./pages/TravelPost";
+import UpdateTravel from "./pages/UpdateTravel";
 
 const App = () => {
   return (
@@ -28,7 +29,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/travel/:travelSlug" element={<TravelPost />} />
+        {/* <Route path="/travel/:travelSlug" element={<TravelPost />} /> */}
+        <Route path="/travel/:travelId" element={<TravelPost />} />
+
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/search" element={<Search />} />
@@ -39,6 +42,7 @@ const App = () => {
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
+          <Route path="/update-travel/:travelId" element={<UpdateTravel />} />
         </Route>
 
         <Route path="/projects" element={<Projects />} />

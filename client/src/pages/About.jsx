@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 const cardVariants = {
-  offscreen: { y: 50, opacity: 0 },
+  offscreen: { y: 10, opacity: 0 },
   onscreen: {
     y: 0,
     opacity: 1,

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
-
+import { IoTrashOutline } from "react-icons/io5";
 export default function DashComments() {
   const { currentUser } = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
@@ -102,7 +102,7 @@ export default function DashComments() {
                       }}
                       className="font-medium text-red-500 hover:underline cursor-pointer"
                     >
-                      Delete
+                      <IoTrashOutline className="text-lg cursor-pointer" />
                     </span>
                   </Table.Cell>
                 </Table.Row>

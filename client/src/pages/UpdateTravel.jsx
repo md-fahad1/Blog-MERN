@@ -9,75 +9,112 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function CreateTravelPost() {
+export default function UpdateTravel() {
   const dateRef = useRef(null);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([]); // for selected files
   const [imageUploadProgress, setImageUploadProgress] = useState({});
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({ tags: [], images: [] });
+
   const [publishError, setPublishError] = useState(null);
   const [tagInput, setTagInput] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const navigate = useNavigate();
+  const { travelId } = useParams();
 
+  // -------- Fetch Travel Post --------
+  useEffect(() => {
+    const fetchTravel = async () => {
+      try {
+        const res = await fetch(`/api/travel/get/${travelId}`);
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          setPublishError(errorData.message || "Something went wrong");
+          return;
+        }
+
+        const data = await res.json();
+        console.log("response", data);
+
+        setFormData(data.travel); // assuming backend returns { travel: {...} }
+      } catch (err) {
+        console.error(err);
+        setPublishError("Failed to load travel post");
+      }
+    };
+
+    if (travelId) {
+      fetchTravel();
+    }
+  }, [travelId]);
+
+  // -------- Image Upload --------
   const handleUploadImages = async () => {
     if (!files.length) {
       setImageUploadError("Please select at least one image");
       return;
     }
+
     setImageUploadError(null);
     const storage = getStorage(app);
     const uploadedURLs = [];
-    for (const file of files) {
-      const fileName = new Date().getTime() + "-" + file.name;
-      const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      await new Promise((resolve, reject) => {
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setImageUploadProgress((prev) => ({
-              ...prev,
-              [file.name]: progress.toFixed(0),
-            }));
-          },
-          (error) => {
-            setImageUploadError("Image upload failed");
-            reject(error);
-          },
-          async () => {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            uploadedURLs.push(downloadURL);
-            resolve();
-          }
-        );
-      });
-    }
+
+    await Promise.all(
+      files.map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            const fileName = Date.now() + "-" + file.name;
+            const storageRef = ref(storage, fileName);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setImageUploadProgress((prev) => ({
+                  ...prev,
+                  [file.name]: progress.toFixed(0),
+                }));
+              },
+              (err) => {
+                setImageUploadError("Image upload failed");
+                reject(err);
+              },
+              async () => {
+                const downloadURL = await getDownloadURL(
+                  uploadTask.snapshot.ref
+                );
+                uploadedURLs.push(downloadURL);
+                resolve();
+              }
+            );
+          })
+      )
+    );
+
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...uploadedURLs],
+      images: [...(prev.images || []), ...uploadedURLs],
     }));
+
     setFiles([]);
     setImageUploadProgress({});
   };
 
+  // -------- Submit Update --------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.images.length) {
-      setPublishError("Please upload at least one image");
-      return;
-    }
     try {
-      const res = await fetch("/api/travel/create", {
-        method: "POST",
+      const res = await fetch(`/api/travel/updatetravel/${travelId}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
@@ -86,12 +123,14 @@ export default function CreateTravelPost() {
         setPublishError(data.message);
         return;
       }
-      navigate("/");
+      navigate("/"); // redirect to updated travel page
+      //   navigate(`/travel/${data.slug}`); // redirect to updated travel page
     } catch (error) {
       setPublishError("Something went wrong");
     }
   };
 
+  // -------- Tags --------
   const handleAddTag = () => {
     if (tagInput.trim() === "") return;
     if (formData.tags.includes(tagInput.trim())) return;
@@ -99,20 +138,23 @@ export default function CreateTravelPost() {
     setFormData({ ...formData, tags: newTags });
     setTagInput("");
   };
-
   const handleRemoveTag = (tagToRemove) => {
     const newTags = formData.tags.filter((tag) => tag !== tagToRemove);
     setFormData({ ...formData, tags: newTags });
   };
 
+  // -------- Location Autocomplete --------
   const handleLocationChange = (e) => {
     const value = e.target.value;
     setFormData({ ...formData, location: value });
+
     if (debounceTimeout) clearTimeout(debounceTimeout);
+
     const timeout = setTimeout(() => {
       if (value.length > 1) fetchLocationSuggestions(value);
       else setLocationSuggestions([]);
     }, 500);
+
     setDebounceTimeout(timeout);
   };
 
@@ -139,10 +181,11 @@ export default function CreateTravelPost() {
     <div className="flex justify-center items-center min-h-screen bg-gray-50 px-3">
       <div className="bg-white shadow-xl rounded-2xl p-1 md:p-6 w-full max-w-3xl">
         <h1 className="text-2xl font-bold text-gray-800 mb-3">
-          ✈️ Create Travel Post
+          ✏️ Update Travel Post
         </h1>
 
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+          {/* Title */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-600">
               Title
@@ -151,12 +194,14 @@ export default function CreateTravelPost() {
               type="text"
               placeholder="Enter trip title"
               required
+              value={formData.title || ""}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
             />
           </div>
 
+          {/* Location & Date */}
           <div className="flex flex-col md:flex-row w-full relative gap-4">
             <div className="flex flex-col w-full md:w-1/2">
               <label className="block mb-2 text-sm font-medium text-gray-600">
@@ -221,6 +266,7 @@ export default function CreateTravelPost() {
               <TextInput
                 type="date"
                 required
+                value={formData.tripDate || ""}
                 ref={dateRef}
                 onClick={() => dateRef.current?.showPicker()}
                 onChange={(e) =>
@@ -231,6 +277,7 @@ export default function CreateTravelPost() {
             </div>
           </div>
 
+          {/* Tags */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-600">
               Tags
@@ -251,7 +298,7 @@ export default function CreateTravelPost() {
               </Button>
             </div>
             <div className="flex flex-wrap gap-2 mt-3">
-              {formData.tags.map((tag, idx) => (
+              {formData.tags?.map((tag, idx) => (
                 <span
                   key={idx}
                   className="flex items-center bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium shadow-sm"
@@ -269,6 +316,7 @@ export default function CreateTravelPost() {
             </div>
           </div>
 
+          {/* Image Upload */}
           <div className="p-4 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col gap-2">
             <FileInput
               type="file"
@@ -326,6 +374,7 @@ export default function CreateTravelPost() {
             </div>
           )}
 
+          {/* Description */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-600">
               Description
@@ -336,6 +385,7 @@ export default function CreateTravelPost() {
                 placeholder="Write something about your trip..."
                 className="h-64"
                 required
+                value={formData.description || ""}
                 onChange={(value) =>
                   setFormData({ ...formData, description: value })
                 }
@@ -343,12 +393,13 @@ export default function CreateTravelPost() {
             </div>
           </div>
 
+          {/* Submit */}
           <Button
             type="submit"
             gradientDuoTone="purpleToPink"
             className="rounded-xl py-2"
           >
-            🚀 Publish
+            💾 Update
           </Button>
 
           {publishError && (
