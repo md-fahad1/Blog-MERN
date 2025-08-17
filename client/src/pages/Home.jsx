@@ -125,8 +125,8 @@ export default function Home() {
   }, []);
   return (
     <div className="bg-[#FCFCFC] dark:bg-[#10172A] min-h-[100vh]">
-      <div className="flex min-h-[90vh] items-center">
-        <div className="flex  flex-col-reverse md:flex-row md:px-3 bg-[#EEDCF5] w-[80%]  h-[70vh] rounded-md  mx-auto  ">
+      <div className="flex min-h-[90vh] items-center ">
+        <div className="flex  flex-col-reverse md:flex-row md:px-3 bg-[#EEDCF5] w-[85%] md:w-[80%]  h-[70vh] rounded-md  mx-auto  ">
           <div className=" w-full md:w-2/3 flex flex-col gap-4 p-3 md:p-10 2xl:pl-20 2xl:pt-20 2xl:pr-10">
             <span className="bg-[#FFCEA3] rounded-md py-1 px-3 w-20 font-semibold text-gray-700">
               Lifestyle

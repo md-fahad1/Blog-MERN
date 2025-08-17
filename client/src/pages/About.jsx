@@ -11,7 +11,7 @@ const cardVariants = {
 
 const About = () => {
   return (
-    <section className="max-w-7xl mx-auto p-6 text-gray-800 dark:text-white">
+    <section className="max-w-7xl mx-auto p-0 md:p-6 text-gray-800 dark:text-white">
       <h2 className="text-center font-fenix text-3xl dark:text-white  font-semibold mb-12 text-black">
         Something About Me
       </h2>
@@ -19,7 +19,7 @@ const About = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 px-4 sm:px-0">
         {/* Education */}
         <motion.div
-          className="bg-white dark:text-white dark:bg-slate-800 rounded-xl shadow-lg p-6 flex flex-col items-center"
+          className="bg-white dark:text-white dark:bg-slate-800 rounded-xl shadow-lg p-2 md:p-6 flex flex-col items-center"
           initial="offscreen"
           whileInView="onscreen"
           viewport={{ once: true, amount: 0.6 }}

@@ -70,7 +70,7 @@ const divVariants = {
 };
 
 const containerVariants = {
-  hidden: { opacity: 0.3 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
@@ -140,7 +140,7 @@ const Projects = () => {
       <h1 className="text-center font-fenix font-bold my-6 text-3xl">
         Projects with demo
       </h1>
-      <div className="container mx-auto px-12">
+      <div className=" w-full md:container mx-auto px-3 md:px-12">
         {projectData.map((project, index) => {
           const controls = controlsArray.current[index];
           const isEven = index % 2 === 0;
@@ -155,7 +155,7 @@ const Projects = () => {
               ref={(el) => (projectRefs.current[index] = el)}
             >
               <motion.div
-                className={`w-full h-[280px]  md:mt-10 md:w-1/2 p-5 bg-[#061E3D] rounded-md ${
+                className={`w-full h-[170px] md:h-[280px]  md:mt-10 md:w-1/2 p-5 bg-[#061E3D] rounded-md ${
                   isEven ? "md:order-1" : "md:order-2"
                 }`}
                 variants={divVariants}
