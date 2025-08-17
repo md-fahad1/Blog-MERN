@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
 const PostCardVertical = ({ post }) => {
-  console.log(post);
   const truncateContent = (content, maxLength) => {
-    if (!content) return ""; // Handle case where content is empty or undefined
+    if (!content) return "";
     return content.length > maxLength
       ? content.substring(0, maxLength) + "..."
       : content;
@@ -14,11 +13,13 @@ const PostCardVertical = ({ post }) => {
     <div className="  group bg-slate-100 dark:bg-gray-600 rounded-md flex flex-row relative gap-5   w-full  h-[220px]  md:h-[250px] overflow-hidden  transition-all">
       <div>
         <Link to={`/post/${post.slug}`}>
-          <img
-            src={post.image}
-            alt="post cover"
-            className="h-[200px] mt-2 ml-2 w-[220px] rounded-md hover:scale-105 object-cover  transition-all duration-300 z-20"
-          />
+          <div className="h-[200px] md:h-[220px] w-[120px] md:w-[220px] overflow-hidden mt-2 ml-2 rounded-md">
+            <img
+              src={post.image}
+              alt="post cover"
+              className="w-full h-full object-cover hover:scale-105 transition-all duration-300"
+            />
+          </div>
         </Link>
       </div>
       <Link to={`/post/${post.slug}`}>
@@ -33,7 +34,6 @@ const PostCardVertical = ({ post }) => {
               </span>{" "}
               {/* <span className="italic text-[10px] mt-1.5 md:mt-0 md:text-[13px] text-blue-[#14385E] font-semibold"></span> */}
             </div>
-
             <span className="italic text-[10px] mt-1 md:mt-1 md:text-[13px] justify-end">
               {post && (post.content.length / 1000).toFixed(0)} comments
             </span>
