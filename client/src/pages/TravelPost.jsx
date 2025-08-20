@@ -22,7 +22,7 @@ const fadeSlide = {
 
 const TravelPost = () => {
   const { travelId } = useParams();
-  console.log("Travel ID:", travelId);
+
   const [formData, setFormData] = useState(null);
   const [publishError, setPublishError] = useState("");
 
@@ -65,7 +65,7 @@ const TravelPost = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-4 px-3 md:px-6 max-w-6xl mx-auto"
+      className="min-h-screen bg-gradient-to-b font-fenix from-gray-50 to-gray-100 py-4 px-3 md:px-6 max-w-6xl mx-auto"
       variants={containerVariant}
       initial="hidden"
       animate="visible"
@@ -117,7 +117,7 @@ const TravelPost = () => {
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3 text-white text-lg">
-          {formData.description}
+          {formData.tag}
         </div>
       </motion.div>
 
@@ -129,11 +129,11 @@ const TravelPost = () => {
         <h2 className="text-2xl font-semibold font-fenix mb-4 text-gray-800">
           Details
         </h2>
-        <p className="text-gray-700 font-fenix leading-relaxed text-lg">
-          {formData.description}
-        </p>
+        <div
+          className="text-gray-700 font-fenix leading-relaxed text-lg"
+          dangerouslySetInnerHTML={{ __html: formData.description }}
+        />
       </motion.section>
-
       {/* Gallery */}
       <motion.section
         className="grid grid-cols-2 sm:grid-cols-3 gap-6"

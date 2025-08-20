@@ -15,16 +15,10 @@ const cardVariants = {
       damping: 20,
     },
   }),
-  hover: {
-    scale: 1.05,
-    boxShadow: "0 12px 24px rgba(37, 99, 235, 0.3)",
-    transition: { duration: 0.3 },
-  },
 };
 
 const VisitedPlace = () => {
   const [travels, setTravels] = useState([]);
-  const [showMore, setShowMore] = useState(true);
 
   useEffect(() => {
     const fetchTravels = async () => {
@@ -33,8 +27,6 @@ const VisitedPlace = () => {
         const data = await res.json();
         if (res.ok) {
           setTravels(data.travels);
-          console.log("Fetched travels:", data.travels);
-          if (data.travels.length < 9) setShowMore(false);
         }
       } catch (error) {
         console.error("Failed to fetch travels:", error.message);
@@ -45,34 +37,33 @@ const VisitedPlace = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {travels.map((place, index) => (
           <motion.div
             key={place._id || place.id}
-            className="bg-white rounded-sm shadow-md overflow-hidden cursor-pointer border border-gray-200 hover:border-[#E5D6FE]"
+            className="relative h-40 cursor-pointer overflow-hidden group"
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             custom={index}
-            whileHover="hover"
           >
-            <Link to={`/travel/${place._id}`} className="block">
+            <Link to={`/travel/${place._id}`} className="block w-full h-full">
+              {/* Background Image */}
               <motion.img
                 src={place.images?.[0] || "/placeholder.jpg"}
                 alt={place.title || "Travel Image"}
-                className="w-full h-56 object-cover rounded-t-sm"
-                loading="lazy"
-                whileHover={{ scale: 1.05, filter: "brightness(0.85)" }}
-                transition={{ duration: 0.3 }}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
               />
-              <div className="p-2">
-                <motion.h3
-                  className="text-center text-xl font-semibold font-fenix text-[#F26259] mb-1"
-                  whileHover={{ color: "#2563EB" }}
-                >
+
+              {/* Overlay Border */}
+              <div className="absolute inset-0 border border-white m-2"></div>
+
+              {/* Centered Title */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h3 className="bg-white px-4 py-1 text-sm sm:text-base md:text-lg font-semibold tracking-wide text-gray-700 uppercase">
                   {place.title}
-                </motion.h3>
+                </h3>
               </div>
             </Link>
           </motion.div>

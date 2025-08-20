@@ -13,7 +13,7 @@ import { useRef, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
-
+import { compressImage } from "../../utils/imageCompressor";
 export default function CreateTravelPost() {
   const dateRef = useRef(null);
   const [files, setFiles] = useState([]);
@@ -35,9 +35,10 @@ export default function CreateTravelPost() {
     const storage = getStorage(app);
     const uploadedURLs = [];
     for (const file of files) {
-      const fileName = new Date().getTime() + "-" + file.name;
+      const compressedFile = await compressImage(file);
+      const fileName = new Date().getTime() + "-" + compressedFile.name;
       const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const uploadTask = uploadBytesResumable(storageRef, compressedFile);
       await new Promise((resolve, reject) => {
         uploadTask.on(
           "state_changed",
@@ -213,7 +214,6 @@ export default function CreateTravelPost() {
                 )}
               </div>
             </div>
-
             <div className="flex flex-col w-full md:w-1/2">
               <label className="block mb-2 text-sm font-medium text-gray-600">
                 Trip Date

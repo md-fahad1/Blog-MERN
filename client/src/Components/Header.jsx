@@ -146,20 +146,23 @@ export default function Header() {
       <Navbar.Collapse
         className={`${
           isCollapsedOpen && !hideOnScroll ? "block" : "hidden"
-        } md:flex fixed top-[64px] left-0 w-full text-center bg-white dark:bg-gray-800 shadow-lg z-50 md:relative md:top-0 md:bg-transparent md:shadow-none`}
+        } md:flex fixed top-[64px] uppercase left-0 w-full text-center bg-white dark:bg-gray-800 shadow-lg z-50 md:relative md:top-0 md:bg-transparent md:shadow-none`}
       >
         <Navbar.Link active={path === "/"} as="div">
-          <Link to="/" className="block w-full font-bold text-[16px]">
+          <Link to="/" className="block w-full font-semibold text-[14px]">
             Home
           </Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/about"} as="div">
-          <Link to="/about" className="block w-full font-bold text-[16px]">
+          <Link to="/about" className="block w-full font-semibold text-[14px]">
             About
           </Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/projects"} as="div">
-          <Link to="/projects" className="block w-full font-bold text-[16px]">
+          <Link
+            to="/projects"
+            className="block w-full font-semibold text-[14px]"
+          >
             Projects
           </Link>
         </Navbar.Link>
@@ -168,7 +171,7 @@ export default function Header() {
             href="https://fahad-protfolio-v2.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full font-bold text-[16px]"
+            className="block w-full font-semibold text-[14px]"
           >
             Portfolio
           </a>

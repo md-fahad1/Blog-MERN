@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import CallToAction from "../Components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../Components/PostCard";
-import { motion } from "framer-motion";
+
 import PostCardVertical from "../Components/PostCardVertical";
 import VisitedPlace from "../Components/VisitedPlace";
+
+import Aboutme from "./Aboutme";
+import ShowRecentPost from "./ShowRecentPost";
+import MeOnFB from "./MeOnFB";
 
 const imgVariants = {
   initial: {
@@ -161,27 +165,42 @@ export default function Home() {
       {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
         <CallToAction />
       </div> */}
-      <div className="md:px-28 mt-5">
+      <div className="md:px-5 mt-1">
         <h2 className="text-2xl font-fenix font-bold text-center md:text-left ">
           Visited Places
         </h2>
         <VisitedPlace />
       </div>
 
-      <div className="max-w-full mx-auto p-3 flex flex-col py-7">
+      <div className="max-w-full mx-auto p-3 flex flex-col py-5">
         {posts && posts.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-bold font-fenix text-center md:text-left md:px-28">
+            <h2 className="text-2xl font-bold font-fenix text-center md:text-left md:px-5">
               Latest Posts
             </h2>
-            <div className=" md:px-28  px-2 gap-5">
-              {posts.map((post) => (
-                <PostCardVertical key={post._id} post={post} />
-              ))}
+            <div className=" md:px-5 flex flex-row  px-2 gap-0">
+              <div className="w-full md:w-2/3">
+                <div className="grid grid-cols-1  sm:grid-cols-2 gap-1 md:gap-4">
+                  {posts.map((post) => (
+                    <PostCardVertical key={post._id} post={post} />
+                  ))}
+                </div>
+                <Link to={"/search"} className="text-lg text-center">
+                  View all posts
+                </Link>
+              </div>
+              <div className="w-full md:w-1/3 hidden md:block">
+                <div className="hidden md:block w-full">
+                  <Aboutme />
+                </div>
+                <div className="hidden md:block mt-10">
+                  <ShowRecentPost />
+                </div>
+                <div className="hidden md:block mt-10">
+                  <MeOnFB />
+                </div>
+              </div>
             </div>
-            <Link to={"/search"} className="text-lg text-center">
-              View all posts
-            </Link>
           </div>
         )}
       </div>
