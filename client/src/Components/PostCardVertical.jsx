@@ -33,7 +33,7 @@ const PostCardVertical = ({ post }) => {
 
         {/* Title */}
         <Link to={`/post/${post.slug}`}>
-          <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white group-hover:text-[#F26259] transition-colors duration-300 line-clamp-2 min-h-[56px]">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white group-hover:text-[#e74694] transition-colors duration-300 line-clamp-2 min-h-[56px]">
             {post.title}
           </h2>
         </Link>
@@ -57,7 +57,7 @@ const PostCardVertical = ({ post }) => {
         {/* Button (sticks at bottom) */}
         <div className="mt-auto">
           <Link to={`/post/${post.slug}`}>
-            <button className="inline-flex items-center px-4 py-2 bg-[#B1835C] text-white text-sm font-semibold uppercase tracking-wide rounded-sm shadow hover:bg-[#8b6549] transition-colors duration-300">
+            <button className="inline-flex items-center px-4 py-2 bg-[#e74694] text-white text-sm font-semibold uppercase tracking-wide rounded-sm shadow hover:bg-[#ad2366] transition-colors duration-300">
               Read The Article <FaArrowRight className="ml-2 text-xs" />
             </button>
           </Link>
