@@ -16,6 +16,7 @@
     "firebase": "^10.7.1",
     "flowbite-react": "^0.7.0",
     "framer-motion": "^11.2.12",
+    "mern-blog": "file:..",
     "moment": "^2.29.4",
     "quill": "^2.0.3",
     "react": "^18.2.0",
