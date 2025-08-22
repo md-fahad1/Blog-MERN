@@ -28,6 +28,13 @@ const textItem = {
   hidden: { y: 50, opacity: 0 },
   visible: { y: 0, opacity: 1, transition: { duration: 0.8 } },
 };
+const bounceTransition = {
+  y: {
+    duration: 0.6,
+    yoyo: Infinity,
+    ease: "easeOut",
+  },
+};
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
@@ -51,14 +58,14 @@ export default function Home() {
           >
             <motion.h1
               variants={textItem}
-              className="text-2xl sm:text-3xl 2xl:text-5xl font-bold text-gray-800 leading-snug"
+              className="text-2xl sm:text-3xl 2xl:text-5xl font-bold text-gray-800 dark:text-white leading-snug"
             >
               Welcome to <span className="text-pink-500">Fahad Blog</span>
             </motion.h1>
 
             <motion.p
               variants={textItem}
-              className="text-gray-600 text-lg 2xl:text-2xl"
+              className="text-gray-600 dark:text-white text-lg 2xl:text-2xl"
             >
               Life is short, so treasure every moment. Pursue happiness and
               build joyful memories. Live fully and cherish each experience.
@@ -72,6 +79,29 @@ export default function Home() {
                 <Link to="/search">See all posts</Link>
               </span>
             </motion.button>
+            {/* <div className="flex flex-row gap-5">
+              {" "}
+              <motion.div
+                className=" top-10 left-10 w-5 h-5 rounded-full bg-pink-500"
+                animate={{ y: [0, -20] }}
+                transition={{
+                  duration: 0.1,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                }}
+              />
+              <motion.div
+                className=" top-20 right-20 w-5 h-5 rounded-full bg-yellow-400"
+                animate={{ y: [0, -25] }}
+                transition={{
+                  duration: 0.1,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                }}
+              />
+            </div> */}
           </motion.div>
 
           {/* Right Image */}
