@@ -1,6 +1,19 @@
 import React from "react";
 
 const MeOnFB = () => {
+  // Images as objects
+  const images = [
+    { id: 1, src: "/sreemangal.jpg", alt: "Faha 1" },
+    { id: 2, src: "/1.jpg", alt: "Faha 2" },
+    { id: 3, src: "/3.jpg", alt: "Faha 3" },
+    { id: 4, src: "/4.jpg", alt: "Faha 4" },
+    { id: 5, src: "/5.jpg", alt: "Faha 5" },
+    { id: 6, src: "/6.jpg", alt: "Faha 6" },
+    { id: 7, src: "/7.jpg", alt: "Faha 7" },
+    { id: 8, src: "/8.jpg", alt: "Faha 8" },
+    { id: 9, src: "/9.jpg", alt: "Faha 9" },
+  ];
+
   return (
     <div className="p-4">
       {/* Section Heading */}
@@ -14,12 +27,12 @@ const MeOnFB = () => {
 
       {/* Images Grid */}
       <div className="grid grid-cols-3 gap-4 p-8">
-        {Array.from({ length: 9 }).map((_, index) => (
+        {images.map((image) => (
           <img
-            key={index}
-            src="/faha.png"
-            alt={`Faha ${index + 1}`}
-            className="w-full h-32 object-cover  shadow-md hover:scale-105 transition-transform duration-300"
+            key={image.id}
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-32 object-cover shadow-md hover:scale-105 transition-transform duration-300"
           />
         ))}
       </div>
