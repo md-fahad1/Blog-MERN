@@ -174,7 +174,7 @@ export default function Header() {
         </Navbar.Link>
         <div className={path === "/portfolio" ? "active" : ""}>
           <a
-            href="https://fahad-protfolio-v2.vercel.app/"
+            href="https://fahad-portfolio-v1-bice.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="block w-full font-semibold text-[14px] 2xl:text-[18px]"

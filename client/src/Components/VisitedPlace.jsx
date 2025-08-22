@@ -61,7 +61,7 @@ const VisitedPlace = () => {
 
               {/* Centered Title */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <h3 className="bg-white bg-opacity-60 hover:bg-opacity-100 hover:text-[#F26259] px-4 py-1 text-sm sm:text-base md:text-lg font-semibold tracking-wide text-gray-700 uppercase">
+                <h3 className="bg-white bg-opacity-40 hover:bg-opacity-100 hover:text-[#e74694] px-4 py-1 text-sm sm:text-base md:text-lg font-semibold tracking-wide text-gray-700 uppercase">
                   {place.title}
                 </h3>
               </div>
