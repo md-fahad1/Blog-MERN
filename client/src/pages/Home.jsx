@@ -49,9 +49,9 @@ export default function Home() {
   return (
     <div className="bg-[#FCFCFC] dark:bg-[#10172A] min-h-[100vh]">
       <div className="flex  min-h-[80vh] items-center ">
-        <div className="  md:flex-row mx-auto px-4 md:px-20  grid md:grid-cols-2 items-center md:gap-60 2xl:gap-72">
+        <div className=" flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row gap-3 md:gap-16 px-4 md:px-16 lg:px-20  items-center ">
           <motion.div
-            className="space-y-6"
+            className="md:space-y-6 lg:space-y-6 space-y-2"
             variants={textContainer}
             initial="hidden"
             animate="visible"
@@ -114,7 +114,7 @@ export default function Home() {
             <img
               src="/formal.jpg"
               alt="about"
-              className="w-60 mb-6 shadow-lg h-60 md:w-[330px] md:h-[385px] 2xl:w-[450px] 2xl:h-[450px] rounded-md"
+              className="w-60 mb-6 shadow-lg ml-8 md:ml-0 lg:ml-0 xl:ml-0  h-60 md:w-[330px] md:h-[385px] 2xl:w-[450px] 2xl:h-[450px] rounded-md"
             />
           </motion.div>
         </div>
