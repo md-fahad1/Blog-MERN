@@ -87,6 +87,11 @@ export default function DashSidebar() {
               <span className="hidden md:inline">Travel Posts</span>
             </Sidebar.Item>
           </Link>
+          <Link to="/dashboard?tab=fb">
+            <Sidebar.Item active={tab === "fb"} icon={HiDocumentText} as="div">
+              <span className="hidden md:inline">Fb Posts</span>
+            </Sidebar.Item>
+          </Link>
 
           {currentUser.isAdmin && (
             <>

@@ -14,6 +14,8 @@ const MeOnFB = () => {
     { id: 9, src: "/9.jpg", alt: "Faha 9" },
   ];
 
+  const fbUrl = "https://www.facebook.com/share/1VqPmXWji2/";
+
   return (
     <div className="p-4">
       {/* Section Heading */}
@@ -28,12 +30,18 @@ const MeOnFB = () => {
       {/* Images Grid */}
       <div className="grid grid-cols-3 gap-4 p-8">
         {images.map((image) => (
-          <img
+          <a
             key={image.id}
-            src={image.src}
-            alt={image.alt}
-            className="w-full h-32 object-cover shadow-md hover:scale-105 transition-transform duration-300"
-          />
+            href={fbUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="w-full h-32 object-cover shadow-md hover:scale-105 transition-transform duration-300"
+            />
+          </a>
         ))}
       </div>
     </div>

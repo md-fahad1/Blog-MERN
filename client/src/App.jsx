@@ -20,6 +20,8 @@ import OnlyAdminPrivateRoute from "./Components/OnlyAdminPrivateRoute";
 import Projects from "./pages/Projects";
 import TravelPost from "./pages/TravelPost";
 import UpdateTravel from "./pages/UpdateTravel";
+import DashFb from "./Components/DashFb";
+import CreateFb from "./pages/CreateFb";
 
 const App = () => {
   return (
@@ -43,6 +45,8 @@ const App = () => {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
           <Route path="/update-travel/:travelId" element={<UpdateTravel />} />
+          <Route path="/fb" element={<DashFb />} />
+          <Route path="/create-fb" element={<CreateFb />} />
         </Route>
 
         <Route path="/projects" element={<Projects />} />

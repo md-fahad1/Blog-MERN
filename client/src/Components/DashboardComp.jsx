@@ -124,9 +124,11 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-1/2 shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-2 text-sm font-semibold">
             <h1 className="text-center p-2">Recent users</h1>
-            <Button>
-              <Link to={"/dashboard?tab=users"}>See all</Link>
-            </Button>
+            <p>
+              <Link to={"/dashboard?tab=users"} className="text-pink-500">
+                View All
+              </Link>
+            </p>
           </div>
           <Table hoverable className="border-2 border-cyan-900">
             <Table.Head>
@@ -159,9 +161,11 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent comments</h1>
-            <Button>
-              <Link to={"/dashboard?tab=comments"}>See all</Link>
-            </Button>
+            <p>
+              <Link to={"/dashboard?tab=comments"} className="text-pink-500">
+                View All
+              </Link>
+            </p>
           </div>
           <Table hoverable className="border-2 border-cyan-900">
             <Table.Head>
@@ -190,13 +194,16 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-full shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent posts</h1>
-            <Button>
-              <Link to={"/dashboard?tab=posts"}>See all</Link>
-            </Button>
+            <p>
+              <Link to={"/dashboard?tab=posts"} className="text-pink-500">
+                View All
+              </Link>
+            </p>
           </div>
           <Table hoverable>
             <Table.Head>
               <Table.HeadCell>Post image</Table.HeadCell>
+              <Table.HeadCell>Date</Table.HeadCell>
               <Table.HeadCell>Post Title</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
             </Table.Head>
@@ -210,6 +217,10 @@ export default function DashboardComp() {
                         alt="user"
                         className="w-14 h-10 rounded-md bg-gray-500"
                       />
+                    </Table.Cell>
+                    <Table.Cell>
+                      {" "}
+                      {new Date(post.createdAt).toLocaleDateString()}
                     </Table.Cell>
                     <Table.Cell className="w-96">{post.title}</Table.Cell>
                     <Table.Cell className="w-5">{post.category}</Table.Cell>
