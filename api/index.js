@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.route.js";
 import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import travelRoutes from "./routes/travel.route.js";
+import uploadRoutes from "./routes/upload.route.js";
 import cookieParser from "cookie-parser";
 import path from "path";
 
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/travel", travelRoutes);
+app.use("/api/upload", uploadRoutes);
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 

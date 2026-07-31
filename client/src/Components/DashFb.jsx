@@ -5,13 +5,6 @@ import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { app } from "../firebase"; // adjust your firebase import
 
 export default function DashFb() {
   const { currentUser } = useSelector((state) => state.user);
@@ -82,27 +75,30 @@ export default function DashFb() {
   };
 
   // Handle image file upload
-  const handleImageChange = (file) => {
-    if (!file) return;
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + "-" + file.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+ const handleImageChange = async (file) => {
+  if (!file) return;
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // optional: track progress
-      },
-      (error) => {
-        console.error("Upload failed:", error);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        setEditImage(downloadURL);
-      }
-    );
-  };
+  try {
+    const formData = new FormData();
+    formData.append("images", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Image upload failed");
+    }
+
+    setEditImage(data.images[0]);
+  } catch (error) {
+    console.error(error);
+    alert("Image upload failed");
+  }
+};
 
   return (
     <div className="max-w-5xl w-full mx-auto mt-10 p-3">
