@@ -51,16 +51,20 @@ export const signin = async (req, res, next) => {
     }
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: "3h" }
     );
 
     const { password: pass, ...rest } = validUser._doc;
 
     res
-      .status(200)
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
+        .status(200)
+        .cookie("access_token", token, {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: 3 * 60 *60 * 1000, // 🔹 CHANGED: 3 hour cookie expiry
+        })
       .json(rest);
   } catch (error) {
     next(error);
