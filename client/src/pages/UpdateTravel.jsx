@@ -2,13 +2,7 @@ import { Alert, Button, FileInput, TextInput } from "flowbite-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../firebase";
+
 import { useRef, useState, useEffect } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -56,58 +50,51 @@ export default function UpdateTravel() {
   }, [travelId]);
 
   // -------- Image Upload --------
-  const handleUploadImages = async () => {
-    if (!files.length) {
-      setImageUploadError("Please select at least one image");
-      return;
-    }
+ const handleUploadImages = async () => {
+  if (!files.length) {
+    setImageUploadError("Please select at least one image");
+    return;
+  }
 
-    setImageUploadError(null);
-    const storage = getStorage(app);
+  setImageUploadError(null);
+
+  try {
     const uploadedURLs = [];
 
-    await Promise.all(
-      files.map(
-        (file) =>
-          new Promise((resolve, reject) => {
-            const fileName = Date.now() + "-" + file.name;
-            const storageRef = ref(storage, fileName);
-            const uploadTask = uploadBytesResumable(storageRef, file);
+    for (const file of files) {
+      const formDataUpload = new FormData();
+      formDataUpload.append("images", file);
 
-            uploadTask.on(
-              "state_changed",
-              (snapshot) => {
-                const progress =
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setImageUploadProgress((prev) => ({
-                  ...prev,
-                  [file.name]: progress.toFixed(0),
-                }));
-              },
-              (err) => {
-                setImageUploadError("Image upload failed");
-                reject(err);
-              },
-              async () => {
-                const downloadURL = await getDownloadURL(
-                  uploadTask.snapshot.ref
-                );
-                uploadedURLs.push(downloadURL);
-                resolve();
-              }
-            );
-          })
-      )
-    );
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formDataUpload,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Upload failed");
+      }
+
+      uploadedURLs.push(...data.images);
+
+      setImageUploadProgress((prev) => ({
+        ...prev,
+        [file.name]: 100,
+      }));
+    }
 
     setFormData((prev) => ({
       ...prev,
-      images: [...(prev.images || []), ...uploadedURLs],
+      images: [...prev.images, ...uploadedURLs],
     }));
 
     setFiles([]);
     setImageUploadProgress({});
-  };
+  } catch (err) {
+    setImageUploadError(err.message);
+  }
+};
 
   // -------- Submit Update --------
   const handleSubmit = async (e) => {

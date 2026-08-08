@@ -26,6 +26,7 @@ const VisitedPlace = () => {
         const res = await fetch("/api/travel/gettravels?startIndex=0&limit=9");
         const data = await res.json();
         if (res.ok) {
+          console.log("Fetched travels:", data.travels);
           setTravels(data.travels);
         }
       } catch (error) {
