@@ -12,6 +12,8 @@ export default {
         merienda: ["Merienda", "cursive"],
         mrdafoe: ["Mr Dafoe", "cursive"],
         arizonia: ["Arizonia", "cursive"],
+         display: ['Fraunces', 'serif'],
+  sans: ['Inter', 'sans-serif'],
       },
     },
   },
