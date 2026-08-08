@@ -49,7 +49,7 @@ const CreateFb = () => {
 
   const saveToBackend = async (downloadURL) => {
     try {
-      const res = await fetch("/api/fb/create", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/fb/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: downloadURL, fbUrl }),
