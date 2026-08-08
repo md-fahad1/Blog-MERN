@@ -15,7 +15,9 @@ export default function DashTravel() {
   useEffect(() => {
     const fetchTravels = async () => {
       try {
-        const res = await fetch("/api/travel/gettravels?startIndex=0&limit=9");
+        const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/travel/gettravels?startIndex=0&limit=9`
+);
         const data = await res.json();
         console.log("data", data);
         if (res.ok) {
@@ -34,7 +36,7 @@ export default function DashTravel() {
     const startIndex = travels.length;
     try {
       const res = await fetch(
-        `/api/travel/gettravels?startIndex=${startIndex}&limit=9`
+        `${import.meta.env.VITE_API_URL}/api/travel/gettravels?startIndex=${startIndex}&limit=9`
       );
       const data = await res.json();
       if (res.ok) {
@@ -50,7 +52,7 @@ export default function DashTravel() {
   const handleDeleteTravel = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(`/api/travel/deletetravel/${travelIdToDelete}`, {
+      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/travel/deletetravel/${travelIdToDelete}`, {
         method: "DELETE",
       });
       const data = await res.json();

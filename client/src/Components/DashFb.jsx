@@ -34,7 +34,7 @@ export default function DashFb() {
   const handleDelete = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(`/api/fb/delete/${fbIdToDelete}`, {
+      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/fb/delete/${fbIdToDelete}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete");
@@ -61,7 +61,7 @@ export default function DashFb() {
   // Save update
   const handleUpdate = async (id) => {
     try {
-      const res = await fetch(`/api/fb/update/${id}`, {
+      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/fb/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: editImage, fbUrl: editFbUrl }),
