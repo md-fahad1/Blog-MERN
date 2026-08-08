@@ -58,13 +58,13 @@ export const signin = async (req, res, next) => {
     const { password: pass, ...rest } = validUser._doc;
 
     res
-        .status(200)
-        .cookie("access_token", token, {
-          httpOnly: false,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          maxAge: 3 * 60 *60 * 1000, // 🔹 CHANGED: 3 hour cookie expiry
-        })
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 3 * 60 * 60 * 1000, // 3 hour cookie expiry
+      })
       .json(rest);
   } catch (error) {
     next(error);
@@ -78,13 +78,17 @@ export const google = async (req, res, next) => {
     if (user) {
       const token = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET,
+        { expiresIn: "3h" }
       );
       const { password, ...rest } = user._doc;
       res
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 3 * 60 * 60 * 1000,
         })
         .json(rest);
     } else {
@@ -103,16 +107,35 @@ export const google = async (req, res, next) => {
       await newUser.save();
       const token = jwt.sign(
         { id: newUser._id, isAdmin: newUser.isAdmin },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET,
+        { expiresIn: "3h" }
       );
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 3 * 60 * 60 * 1000,
         })
         .json(rest);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const signOut = async (req, res, next) => {
+  try {
+    res
+      .clearCookie("access_token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .status(200)
+      .json("User has been signed out");
   } catch (error) {
     next(error);
   }
