@@ -38,7 +38,7 @@ export default function CreateTravelPost() {
       const formDataUpload = new FormData();
       formDataUpload.append("images", compressedFile);
 
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
         method: "POST",
         body: formDataUpload,
       });
@@ -76,7 +76,7 @@ export default function CreateTravelPost() {
       return;
     }
     try {
-      const res = await fetch("/api/travel/create", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/travel/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
