@@ -54,7 +54,7 @@ const VisitedPlace = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
         {travels.map((place, index) => (
           <motion.div
             key={place._id || place.id}
