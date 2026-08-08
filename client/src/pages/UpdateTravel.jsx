@@ -26,7 +26,7 @@ export default function UpdateTravel() {
   useEffect(() => {
     const fetchTravel = async () => {
       try {
-        const res = await fetch(`/api/travel/get/${travelId}`);
+        const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/travel/get/${travelId}`);
 
         if (!res.ok) {
           const errorData = await res.json();
@@ -100,7 +100,7 @@ export default function UpdateTravel() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/travel/updatetravel/${travelId}`, {
+      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/travel/updatetravel/${travelId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

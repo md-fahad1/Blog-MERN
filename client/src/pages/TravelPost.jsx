@@ -29,7 +29,7 @@ const TravelPost = () => {
   useEffect(() => {
     const fetchTravel = async () => {
       try {
-        const res = await fetch(`/api/travel/get/${travelId}`);
+        const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/travel/get/${travelId}`);
         if (!res.ok) {
           const errorData = await res.json();
           setPublishError(errorData.message || "Something went wrong");

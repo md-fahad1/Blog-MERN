@@ -45,7 +45,7 @@ export default function CommentSection({ postId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/comment/getPostComments/${postId}`);
         if (res.ok) {
           const data = await res.json();
           setComments(data);
@@ -63,7 +63,7 @@ export default function CommentSection({ postId }) {
         navigate("/sign-in");
         return;
       }
-      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/comment/likeComment/${commentId}`, {
         method: "PUT",
       });
       if (res.ok) {
@@ -100,7 +100,7 @@ export default function CommentSection({ postId }) {
         navigate("/sign-in");
         return;
       }
-      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/comment/deleteComment/${commentId}`, {
         method: "DELETE",
       });
       if (res.ok) {

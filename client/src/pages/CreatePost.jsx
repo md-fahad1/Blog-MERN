@@ -61,7 +61,7 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/post/create", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function CreatePost() {
 
       if (res.ok) {
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        navigate(`${import.meta.env.VITE_API_URL}/post/${data.slug}`);
       }
     } catch (error) {
       setPublishError("Something went wrong");
