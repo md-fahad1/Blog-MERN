@@ -2,29 +2,45 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import Cookies from "js-cookie";
 import { signoutSuccess } from "../redux/user/userSlice";
 
 const VerifyToken = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation(); // 🔹 detect route changes
+  const location = useLocation();
   const [verified, setVerified] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    const token = Cookies.get("access_token");
+    const checkAuth = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/user/verify`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
-    if (!token) {
-      dispatch(signoutSuccess());
-      navigate("/sign-in", { replace: true });
-    } else {
-      setVerified(true);
-    }
-  }, [dispatch, navigate, location]); // 🔹 add location as dependency
+        if (!res.ok) {
+          throw new Error("Not authenticated");
+        }
 
-  if (!verified) return null; // optional: show loader instead of null
+        setVerified(true);
+      } catch (error) {
+        dispatch(signoutSuccess());
+        navigate("/sign-in", { replace: true });
+      } finally {
+        setChecking(false);
+      }
+    };
 
-  return <>{children}</>;
+    checkAuth();
+  }, [dispatch, navigate, location]);
+
+  if (checking) return null; // or a loader component
+
+  return verified ? <>{children}</> : null;
 };
 
 export default VerifyToken;
