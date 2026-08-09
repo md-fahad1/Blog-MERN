@@ -1,149 +1,393 @@
 import { Link } from "react-router-dom";
-import CallToAction from "../Components/CallToAction";
 import { useEffect, useState } from "react";
-import PostCard from "../Components/PostCard";
+import { motion } from "framer-motion";
 
 import PostCardVertical from "../Components/PostCardVertical";
 import VisitedPlace from "../Components/VisitedPlace";
-import { motion } from "framer-motion";
 import Aboutme from "./Aboutme";
 import ShowRecentPost from "./ShowRecentPost";
 import MeOnFB from "./MeOnFB";
+import {
+  FaMapMarkedAlt,
+  FaPenNib,
+  FaArrowRight,
+  FaGithub,
+  FaLinkedin,
+  FaCode,
+  FaPlaneDeparture,
+} from "react-icons/fa";
+import { HiOutlineNewspaper } from "react-icons/hi";
 
-const imageVariants = {
-  hidden: { x: 200, opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { duration: 1.2 } },
-};
-
-// Text container animation (stagger children)
 const textContainer = {
   hidden: {},
   visible: {
-    transition: {
-      staggerChildren: 0.3, // each child appears 0.3s after previous
-    },
+    transition: { staggerChildren: 0.15 },
   },
 };
 const textItem = {
-  hidden: { y: 50, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.8 } },
+  hidden: { y: 30, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.7 } },
 };
-const bounceTransition = {
-  y: {
-    duration: 0.6,
-    yoyo: Infinity,
-    ease: "easeOut",
+const imageVariants = {
+  hidden: { x: 80, opacity: 0, scale: 0.94 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.9, ease: "easeOut" },
   },
 };
+
+// Change these to your real profiles / stack once — used in the hero and the tech strip
+const SOCIAL_LINKS = {
+  github: "https://github.com/your-username",
+  linkedin: "https://linkedin.com/in/your-username",
+};
+
+const TECH_STACK = [
+  "JavaScript",
+  "React",
+  "Node.js",
+  "MongoDB",
+  "Tailwind CSS",
+  "Express",
+];
+
+// Reusable section header used above "Visited Places" and "Latest Posts"
+const SectionHeading = ({ eyebrow, title }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className="text-center md:text-left mb-4"
+  >
+    {eyebrow && (
+      <span className="inline-block text-xs font-semibold tracking-widest uppercase text-pink-500 mb-1.5">
+        {eyebrow}
+      </span>
+    )}
+    <h2 className="text-2xl font-fenix font-bold text-gray-800 dark:text-white">
+      {title}
+    </h2>
+  </motion.div>
+);
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch(` ${import.meta.env.VITE_API_URL}/api/post/getPosts`);
-      const data = await res.json();
-      setPosts(data.posts);
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/post/getPosts`
+        );
+        const data = await res.json();
+        setPosts(data.posts || []);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
     };
     fetchPosts();
   }, []);
+
   return (
-    <div className="bg-[#FCFCFC] dark:bg-[#10172A] min-h-[100vh]">
-      <div className="flex  min-h-[80vh] items-center ">
-        <div className=" flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row gap-3 md:gap-16 px-4 md:px-16 lg:px-20  items-center ">
+    <div className="bg-[#FCFCFC] dark:bg-[#10172A] min-h-screen">
+      {/* Hero */}
+      <div className="relative overflow-hidden">
+        {/* soft decorative glow, light & dark aware */}
+        <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-pink-200/50 dark:bg-pink-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute top-40 -left-20 w-64 h-64 rounded-full bg-purple-200/40 dark:bg-purple-500/10 blur-3xl" />
+
+        <div className="relative flex min-h-[85vh] items-center">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-40 px-4 md:px-8 lg:px-20 w-full">
+            {/* Text column */}
+            <motion.div
+              className="space-y-4 md:space-y-6 max-w-3xl text-center md:text-left"
+              variants={textContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.span
+                variants={textItem}
+                className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-pink-500 bg-pink-50 dark:bg-pink-500/10 px-3 py-1.5 rounded-full"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500" />
+                </span>
+                Code &amp; travel journal
+              </motion.span>
+
+              <motion.h1
+                variants={textItem}
+                className="text-2xl sm:text-3xl 2xl:text-5xl font-bold text-gray-800 dark:text-white leading-snug"
+              >
+                Welcome to <span className="text-pink-500">Fahad Blog</span>
+              </motion.h1>
+
+              <motion.p
+                variants={textItem}
+                className="text-gray-600 dark:text-gray-300 text-base sm:text-lg 2xl:text-2xl leading-relaxed"
+              >
+                Hi, I&apos;m Fahad — a software engineer who builds things by
+                day and chases new places on the side. Here I write about
+                the code I&apos;m shipping, the cities I&apos;m exploring,
+                and everything in between.
+              </motion.p>
+
+              <motion.p
+                variants={textItem}
+                className="text-gray-500 dark:text-gray-400 text-sm sm:text-base leading-relaxed"
+              >
+                Life is short, so treasure every moment. Pursue happiness and
+                build joyful memories. Live fully and cherish each
+                experience.
+              </motion.p>
+
+              {/* Stats row — post count is live, not made up */}
+              <motion.div
+                variants={textItem}
+                className="flex items-center justify-center md:justify-start gap-6 pt-1"
+              >
+                <div className="text-center md:text-left">
+                  <p className="text-xl font-bold text-gray-800 dark:text-white">
+                    {posts.length}+
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Posts published
+                  </p>
+                </div>
+                <div className="w-px h-8 bg-gray-300 dark:bg-gray-700" />
+                <div className="text-center md:text-left">
+                  <p className="text-xl font-bold text-gray-800 dark:text-white">
+                    Engineer &amp; Traveler
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Code by day, wander by weekend
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* CTAs */}
+              <motion.div
+                variants={textItem}
+                className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2"
+              >
+                <button className="learn-more">
+                  <span className="circle" aria-hidden="true">
+                    <span className="icon arrow mt-4"></span>
+                  </span>
+                  <span className="button-text text-[13px]">
+                    <Link to="/search">See all posts</Link>
+                  </span>
+                </button>
+
+                <Link
+                  to="/about"
+                  className="group inline-flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-pink-500 dark:hover:text-pink-400 transition-colors"
+                >
+                  More about me
+                  <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+
+              {/* Social links */}
+              <motion.div
+                variants={textItem}
+                className="flex items-center justify-center md:justify-start gap-3 pt-1"
+              >
+                <a
+                  href={SOCIAL_LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-100 dark:bg-[#182238] text-gray-600 dark:text-gray-300 hover:text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-500/10 transition-colors"
+                >
+                  <FaGithub className="text-base" />
+                </a>
+                <a
+                  href={SOCIAL_LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-100 dark:bg-[#182238] text-gray-600 dark:text-gray-300 hover:text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-500/10 transition-colors"
+                >
+                  <FaLinkedin className="text-base" />
+                </a>
+              </motion.div>
+            </motion.div>
+
+            {/* Image column */}
+            <motion.div
+              className="relative"
+              variants={imageVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="relative w-60 h-60 md:w-[330px] md:h-[385px] 2xl:w-[450px] 2xl:h-[450px]">
+                {/* gradient frame */}
+                <div
+                  className="absolute -inset-2 rounded-xl opacity-70 blur-sm"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #ec4899, #a855f7, #ec4899)",
+                  }}
+                />
+                <img
+                  src="/formal.jpeg"
+                  alt="Fahad — software engineer and traveler behind Fahad Blog"
+                  className="relative w-full h-full object-cover rounded-xl shadow-xl"
+                />
+
+                {/* floating badge: post count */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9, duration: 0.5 }}
+                  className="absolute -bottom-4 -left-4 sm:-left-6 flex items-center gap-2 rounded-xl bg-white dark:bg-[#182238] shadow-lg px-3.5 py-2.5 border border-gray-100 dark:border-gray-700"
+                >
+                  <span className="w-8 h-8 rounded-lg bg-pink-500/10 text-pink-500 flex items-center justify-center">
+                    <HiOutlineNewspaper className="text-base" />
+                  </span>
+                  <span>
+                    <p className="text-sm font-bold text-gray-800 dark:text-white leading-none">
+                      {posts.length}+
+                    </p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+                      Stories shared
+                    </p>
+                  </span>
+                </motion.div>
+
+                {/* floating badge: writing focus */}
+                <motion.div
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1, duration: 0.5 }}
+                  className="hidden sm:flex absolute -top-4 -right-4 items-center gap-2 rounded-xl bg-white dark:bg-[#182238] shadow-lg px-3.5 py-2.5 border border-gray-100 dark:border-gray-700"
+                >
+                  <span className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center">
+                    <FaPenNib className="text-sm" />
+                  </span>
+                  <span>
+                    <p className="text-sm font-bold text-gray-800 dark:text-white leading-none">
+                      Code &amp; travel
+                    </p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+                      What I write about
+                    </p>
+                  </span>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* What I do — engineer / traveler split */}
+      <div className="md:px-5 px-3 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
           <motion.div
-            className="md:space-y-6 lg:space-y-6 space-y-2"
-            variants={textContainer}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-[#182238] p-5 flex items-start gap-4"
           >
-            <motion.h1
-              variants={textItem}
-              className="text-2xl sm:text-3xl 2xl:text-5xl font-bold text-gray-800 dark:text-white leading-snug"
-            >
-              Welcome to <span className="text-pink-500">Fahad Blog</span>
-            </motion.h1>
-
-            <motion.p
-              variants={textItem}
-              className="text-gray-600 dark:text-white text-lg 2xl:text-2xl"
-            >
-              Life is short, so treasure every moment. Pursue happiness and
-              build joyful memories. Live fully and cherish each experience.
-            </motion.p>
-
-            <motion.button variants={textItem} className="learn-more">
-              <span className="circle" aria-hidden="true">
-                <span className="icon arrow mt-4"></span>
-              </span>
-              <span className="button-text text-[13px]">
-                <Link to="/search">See all posts</Link>
-              </span>
-            </motion.button>
-            {/* <div className="flex flex-row gap-5">
-              {" "}
-              <motion.div
-                className=" top-10 left-10 w-5 h-5 rounded-full bg-pink-500"
-                animate={{ y: [0, -20] }}
-                transition={{
-                  duration: 0.1,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                }}
-              />
-              <motion.div
-                className=" top-20 right-20 w-5 h-5 rounded-full bg-yellow-400"
-                animate={{ y: [0, -25] }}
-                transition={{
-                  duration: 0.1,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                }}
-              />
-            </div> */}
+            <span className="w-10 h-10 shrink-0 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center">
+              <FaCode className="text-lg" />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-gray-800 dark:text-white">
+                Software Engineer
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                I write about the projects, tools, and lessons that come
+                from building software day to day.
+              </p>
+            </div>
           </motion.div>
 
-          {/* Right Image */}
           <motion.div
-            className="relative mt-5"
-            variants={imageVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-[#182238] p-5 flex items-start gap-4"
           >
-            <img
-              src="/formal.jpg"
-              alt="about"
-              className="w-60 mb-6 shadow-lg ml-8 md:ml-0 lg:ml-0 xl:ml-0  h-60 md:w-[330px] md:h-[385px] 2xl:w-[450px] 2xl:h-[450px] rounded-md"
-            />
+            <span className="w-10 h-10 shrink-0 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
+              <FaPlaneDeparture className="text-lg" />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-gray-800 dark:text-white">
+                Traveler
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                Between sprints, I try to get out and see somewhere new —
+                and write down what I find.
+              </p>
+            </div>
           </motion.div>
         </div>
       </div>
-      {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
-        <CallToAction />
-      </div> */}
-      <div className="md:px-5 mt-1">
-        <h2 className="text-2xl  font-fenix font-bold text-center md:text-left ">
-          Visited Places
-        </h2>
+
+      {/* Tech stack strip */}
+      <div className="md:px-5 px-3 mt-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-wrap items-center justify-center md:justify-start gap-2"
+        >
+          <span className="text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500 mr-1">
+            Tools I use
+          </span>
+          {TECH_STACK.map((tech) => (
+            <span
+              key={tech}
+              className="text-xs font-medium px-3 py-1.5 rounded-full bg-gray-100 dark:bg-[#182238] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700"
+            >
+              {tech}
+            </span>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Visited places */}
+      <div className="md:px-5 px-3 mt-8 pb-4">
+        <SectionHeading
+          eyebrow={
+            <span className="inline-flex items-center gap-1.5">
+              <FaMapMarkedAlt className="text-sm" /> Where I&apos;ve been
+            </span>
+          }
+          title="Visited Places"
+        />
         <VisitedPlace />
       </div>
 
-      <div className="max-w-full mx-auto p-3 flex flex-col py-5">
+      {/* Latest posts */}
+      <div className="max-w-full mx-auto p-3 flex flex-col py-6">
         {posts && posts.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-bold font-fenix text-center md:text-left md:px-5">
-              Latest Posts
-            </h2>
-            <div className=" md:px-5 flex flex-row  px-2 gap-0">
+            <div className="md:px-5">
+              <SectionHeading eyebrow="From the blog" title="Latest Posts" />
+            </div>
+            <div className="md:px-5 flex flex-row px-2 gap-0">
               <div className="w-full md:w-2/3">
-                <div className="grid grid-cols-1  sm:grid-cols-2 gap-1 md:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 md:gap-4">
                   {posts.map((post) => (
                     <PostCardVertical key={post._id} post={post} />
                   ))}
                 </div>
-                <Link to={"/search"} className="text-lg text-center">
+                <Link
+                  to="/search"
+                  className="inline-flex items-center gap-1.5 text-lg text-center text-pink-500 hover:text-pink-600 dark:hover:text-pink-400 mt-4 font-medium transition-colors"
+                >
                   View all posts
+                  <FaArrowRight className="text-sm" />
                 </Link>
               </div>
               <div className="w-full md:w-1/3 hidden md:block">
@@ -163,38 +407,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
-
-{
-  /* <div className="flex  flex-col-reverse md:flex-row md:px-3 bg-[#EEDCF5] w-[85%] md:w-[80%]  h-[70vh] rounded-md  mx-auto  ">
-          <div className=" w-full md:w-2/3 flex flex-col gap-4 p-3 md:p-10 2xl:pl-20 2xl:pt-20 2xl:pr-10">
-            <span className="bg-[#FFCEA3] rounded-md py-1 px-3 w-20 font-semibold text-gray-700">
-              Lifestyle
-            </span>
-            <h1 className="text-xl font-fenix dark:text-gray-700 2xl:text-6xl font-bold lg:text-4xl">
-              Welcome to Fahad Blog
-            </h1>
-            <p className="text-gray-500 lg:text-xl 2xl:text-3xl font-semibold sm:text-sm">
-              Life is short, so treasure every moment. Pursue happiness and
-              build joyful memories. Live fully and cherish each experience.
-            </p>
-
-            <button class="learn-more">
-              <span class="circle" aria-hidden="true">
-                <span class="icon arrow mt-4"></span>
-              </span>
-              <span class="button-text text-[13px]">
-                <Link to="/search">See all posts</Link>
-              </span>
-            </button>
-          </div>
-          <div className=" w-full md:w-1/3 ">
-            <img
-              src="/formal.jpg" // Adjust the path based on your project structure
-              alt="about"
-              className=" w-60 h-60 md:w-[330px] md:h-[385px] 2xl:w-[520px] relative   2xl:h-[630px] rounded-md md:absolute md:top-[9%] 2xl:top-[7%] ml-9 md:ml-10 md:mt-10    "
-              // Set your desired height
-            />
-          </div>
-        </div> */
 }
