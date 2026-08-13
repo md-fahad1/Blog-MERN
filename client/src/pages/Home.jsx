@@ -225,7 +225,7 @@ export default function Home() {
               initial="hidden"
               animate="visible"
             >
-              <div className="relative w-60 h-60 md:w-[330px] md:h-[385px] 2xl:w-[450px] 2xl:h-[450px]">
+              <div className="relative mt-4 md:m-0 w-60 h-60 md:w-[330px] md:h-[385px] 2xl:w-[450px] 2xl:h-[450px]">
                 {/* gradient frame */}
                 <div
                   className="absolute -inset-2 rounded-xl opacity-70 blur-sm"
