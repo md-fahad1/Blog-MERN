@@ -1,5 +1,5 @@
-import Fb from "../models/fb.model.js";
-import { errorHandler } from "../utils/error.js";
+import Fb from "./fb.model.js";
+import { errorHandler } from "../../utils/error.js";
 
 // Create a new Fb entry
 export const createFb = async (req, res, next) => {

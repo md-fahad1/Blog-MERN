@@ -5,7 +5,7 @@ import {
   getFbById,
   updateFb,
   deleteFb,
-} from "../controllers/fb.controller.js";
+} from "../features/facekbook/fb.controller.js";
 
 const router = express.Router();
 

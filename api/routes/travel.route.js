@@ -5,8 +5,8 @@ import {
   deleteTravel,
   updateTravel,
   getTravel,
-} from "../controllers/travel.controller.js";
-import { verifyToken } from "../utils/verifyUser.js";
+} from "../features/travel/travel.controller.js";
+import { verifyToken } from "../middleware/verifyUser.js";
 
 const router = express.Router();
 
