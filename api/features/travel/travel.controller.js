@@ -1,5 +1,5 @@
-import Travel from "../models/travel.model.js";
-import { errorHandler } from "../utils/error.js";
+import Travel from "./travel.model.js";
+import { errorHandler } from "../../utils/error.js";
 
 // CREATE travel post (no auth)
 // CREATE travel post (auth required for admin)
