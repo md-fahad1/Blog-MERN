@@ -20,82 +20,51 @@ import {
   SiMysql,
   SiCsharp,
   SiOracle,
+  SiGraphql,
+  SiPrisma,
 } from "react-icons/si";
 import React, { useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
-import projectData from "../../public/projectData"; // Adjust the import path as needed
+import projectData from "../../public/projectData";
 
 const iconComponents = {
-  FaReact: FaReact,
-  FaJsSquare: FaJsSquare,
-  FaHtml5: FaHtml5,
-  FaCss3Alt: FaCss3Alt,
-  FaNodeJs: FaNodeJs,
-  SiExpress: SiExpress,
-  SiMongodb: SiMongodb,
-  SiNextdotjs: SiNextdotjs,
-  SiNestjs: SiNestjs,
-  SiPostgresql: SiPostgresql,
-  SiTailwindcss: SiTailwindcss,
-  SiDotnet: SiDotnet,
-  SiMysql: SiMysql,
-  FaBootstrap: FaBootstrap,
-  FaSass: FaSass,
-
-  SiCsharp: SiCsharp,
-  SiOracle: SiOracle,
-  // Add more icons as needed
+  FaReact,
+  FaJsSquare,
+  FaHtml5,
+  FaCss3Alt,
+  FaNodeJs,
+  SiExpress,
+  SiMongodb,
+  SiNextdotjs,
+  SiNestjs,
+  SiPostgresql,
+  SiTailwindcss,
+  SiDotnet,
+  SiMysql,
+  FaBootstrap,
+  FaSass,
+  SiCsharp,
+  SiOracle,
+  SiGraphql,
+  SiPrisma,
 };
-const divVariants = {
-  initial: {
-    x: -100,
-    opacity: 0,
-  },
-  animate: {
-    x: 0,
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
     opacity: 1,
-    transition: {
-      duration: 1,
-      staggerChildren: 0.1,
-    },
-  },
-  scrollButton: {
-    opacity: 0,
-    y: 10,
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-    },
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" },
   },
 };
 
 const containerVariants = {
-  hidden: { opacity: 1 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3,
-    },
-  },
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const iconContainerVariants = {
-  hidden: { opacity: 0.3 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3, // Adjust stagger duration for icons
-    },
-  },
-};
-
-const iconVariants = {
-  hidden: { opacity: 0, y: 20 },
+const chipVariants = {
+  hidden: { opacity: 0, y: 8 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -116,31 +85,28 @@ const Projects = () => {
               controlsArray.current[index].start("hidden");
             }
           },
-          { threshold: 0.9 }
+          { threshold: 0.25 }
         )
     );
 
     projectRefs.current.forEach((ref, index) => {
-      if (ref) {
-        observers[index].observe(ref);
-      }
+      if (ref) observers[index].observe(ref);
     });
 
     return () => {
       projectRefs.current.forEach((ref, index) => {
-        if (ref) {
-          observers[index].unobserve(ref);
-        }
+        if (ref) observers[index].unobserve(ref);
       });
     };
   }, []);
 
   return (
-    <section className="min-h-screen font-fenix" id="projects">
-      <h1 className="text-center font-fenix font-bold my-6 text-3xl">
+    <section className="min-h-screen font-fenix py-10" id="projects">
+      <h1 className="text-center font-fenix font-bold my-10 text-3xl md:text-4xl">
         Projects with demo
       </h1>
-      <div className=" w-full md:container mx-auto px-3 md:px-12">
+
+      <div className="w-full md:container mx-auto px-4 md:px-12 flex flex-col gap-14">
         {projectData.map((project, index) => {
           const controls = controlsArray.current[index];
           const isEven = index % 2 === 0;
@@ -148,85 +114,96 @@ const Projects = () => {
           return (
             <motion.div
               key={index}
-              className="flex flex-col px-4 md:flex-row text-white my-10 md:gap-5"
+              ref={(el) => (projectRefs.current[index] = el)}
               initial="hidden"
               animate={controls}
               variants={containerVariants}
-              ref={(el) => (projectRefs.current[index] = el)}
+              className={`relative flex flex-col md:flex-row gap-6 md:gap-10 items-center
+                rounded-2xl border border-white/10 bg-[#061E3D]/60 backdrop-blur-sm
+                p-4 md:p-6 transition-colors duration-300 hover:border-teal-400/40
+                hover:bg-[#061E3D]/90 ${isEven ? "" : "md:flex-row-reverse"}`}
             >
+              {/* index badge */}
+              <span className="absolute -top-4 left-4 md:left-6 text-xs font-mono tracking-widest text-teal-300/70 bg-[#061E3D] px-2 py-1 rounded-full border border-white/10">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              {/* image */}
               <motion.div
-                className={`w-full h-[170px] md:h-[280px]  md:mt-10 md:w-1/2 p-5 bg-[#061E3D] rounded-md ${
-                  isEven ? "md:order-1" : "md:order-2"
-                }`}
-                variants={divVariants}
-                initial="initial"
-                whileInView="animate"
+                variants={cardVariants}
+                className="w-full md:w-1/2 shrink-0 overflow-hidden rounded-xl border border-white/10 shadow-lg"
               >
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full object-cover "
-                  initial={{ opacity: 0.5 }}
-                  whileHover={{ scale: 1.02, opacity: 1 }}
-                  animate={{ opacity: 0.7 }}
-                />
+                <div className="aspect-[16/10] w-full overflow-hidden">
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  />
+                </div>
               </motion.div>
-              <div
-                className={`w-full md:w-1/2 p-1 ${
-                  isEven
-                    ? "md:order-2 md:text-right"
-                    : "md:order-1 md:text-left"
-                }`}
+
+              {/* content */}
+              <motion.div
+                variants={cardVariants}
+                className="w-full md:w-1/2 text-left"
               >
-                <h1
-                  className={`text-[23px] font-extrabold mb-2 bg-gradient-to-r from-[#6CD7F6] via-teal-500 to-pink-500 bg-clip-text text-transparent ${
-                    isEven ? "md:text-right" : "md:text-left"
-                  }`}
-                >
+                <h2 className="text-2xl md:text-[26px] font-extrabold mb-3 bg-gradient-to-r from-[#6CD7F6] via-teal-400 to-pink-400 bg-clip-text text-transparent">
                   {project.title}
-                </h1>
-                <p className="mb-4 text-[17px] text-justify text-black dark:text-white">
+                </h2>
+
+                <p className="mb-5 text-[15px] md:text-[16px] leading-relaxed text-slate-200/90">
                   {project.description}
                 </p>
+
+                {/* tech stack chips */}
                 <motion.div
-                  className={`mb-4 flex justify-center md:justify-start gap-3 ${
-                    isEven ? "md:flex md:justify-end" : "md:text-left"
-                  }`}
+                  className="mb-6 flex flex-wrap gap-2"
                   initial="hidden"
                   animate={controls}
-                  variants={iconContainerVariants}
+                  variants={{
+                    visible: { transition: { staggerChildren: 0.06 } },
+                  }}
                 >
                   {project.languages.map((language) => {
-                    const IconComponent =
-                      iconComponents[project.icons[language]];
+                    const IconComponent = iconComponents[project.icons[language]];
                     return (
-                      <motion.div key={language} variants={iconVariants}>
-                        <IconComponent className="inline-block h-8 w-8 mr-2 justify-end animate-glow-border text-black dark:text-white font-bold " />
-                      </motion.div>
+                      <motion.span
+                        key={language}
+                        variants={chipVariants}
+                        className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border border-white/15 bg-white/5 text-slate-200"
+                      >
+                        {IconComponent && <IconComponent className="h-3.5 w-3.5" />}
+                        {language}
+                      </motion.span>
                     );
                   })}
                 </motion.div>
-                <div
-                  className={`flex justify-center md:justify-start gap-3 text-black dark:text-white ${
-                    isEven ? "md:flex md:justify-end" : "md:text-left"
-                  }`}
-                >
+
+                {/* links */}
+                <div className="flex items-center gap-3">
                   <a
                     href={project.githubLink}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full border border-white/15 text-slate-100 hover:bg-white/10 hover:border-teal-400/50 transition-colors"
                   >
-                    <FaGithub className="inline-block h-8 w-8 mr-2 ball1  relative cursor-pointer  justify-center items-center p-2 text-4xl " />
+                    <FaGithub className="h-4 w-4" />
+                    Code
                   </a>
+
                   <a
                     href={project.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full bg-teal-500/90 text-[#061E3D] hover:bg-teal-400 transition-colors"
                   >
-                    <FaExternalLinkAlt className="inline-block h-8 w-8 mr-2 ball1  relative cursor-pointer  justify-center items-center p-2 text-2xl" />
+                    <FaExternalLinkAlt className="h-3.5 w-3.5" />
+                    Live demo
                   </a>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           );
         })}

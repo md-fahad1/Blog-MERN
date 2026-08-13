@@ -1,13 +1,97 @@
 // projectData.js
 const projectData = [
   {
-    title: "Ceramic and Food Products E-commerce",
+  title: "Restaurant Management System",
+  description:
+    "A production-ready restaurant management platform for managing restaurants, branches, employees, customers, orders, reservations, and inventory from one system. Built with Next.js, NestJS, GraphQL, PostgreSQL, and Prisma, with a focus on scalable backend architecture and secure role-based access control. Currently expanding with POS, inventory management, analytics, real-time operations, and advanced SaaS features. Designed with a modular architecture and production-ready practices to support future scalability and multi-restaurant operations.",
+  languages: [
+    "NextJs",
+    "NestJS",
+    "GraphQL",
+    "PostgreSQL",
+    "Prisma",
+    "TailwindCSS",
+  ],
+  image: "/RMS.png",
+  githubLink: "",
+  liveLink: "https://restauranthub-sigma.vercel.app/",
+  icons: {
+    NextJs: "SiNextdotjs",
+    NestJS: "SiNestjs",
+    GraphQL: "SiGraphql",
+    PostgreSQL: "SiPostgresql",
+    Prisma: "SiPrisma",
+    TailwindCSS: "SiTailwindcss",
+  },
+},
+{
+  title: "Dream Group of Company",
+  description:
+    "A modern and scalable e-commerce platform built to manage and showcase six different businesses under a single digital ecosystem. The platform provides centralized product management, business-specific catalogs, responsive product displays, and a seamless shopping experience. Built with Next.js, NestJS, and PostgreSQL, the system is designed with a scalable architecture that makes it easy to manage multiple businesses, products, customers, and operations from one platform.",
+  languages: ["NextJs", "NestJS", "PostgreSQL"],
+  image: "/dream.png",
+  githubLink: "",
+  liveLink: "https://dream3799.com/",
+  icons: {
+    NextJs: "SiNextdotjs",
+    NestJS: "SiNestjs",
+    PostgreSQL: "SiPostgresql",
+  },
+},
+
+  {
+    title: "E-commerce Website MERN Stack",
     description:
-      "I developed a modern and responsive e-commerce website for a ceramic food product brand using Next.js, Tailwind CSS, and ShadCN UI. The platform features a dynamic product catalog, high-quality image displays, and an intuitive navigation system, ensuring customers can easily browse and purchase products. With a minimalist design that highlights the elegance of ceramic foodware, the site is optimized for performance, SEO, and accessibility, delivering a seamless shopping experience across all devices.",
+      "Experience a robust e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js). This website features secure user authentication, role-based access, and a comprehensive admin dashboard. Sellers can manage their products and inventory seamlessly, while buyers enjoy a smooth shopping experience with advanced search and filter options. The platform also integrates payment gateways and Cloudinary for image storage, ensuring a responsive and efficient user experience.",
+    languages: ["React", "Express", "NodeJs", "MongoDB"],
+    image: "/project1.png", // Make sure the image is placed correctly in public/images
+    githubLink: "https://github.com/mdfahad-khan/Ecommerce-MERN",
+    liveLink: "https://dream-gadget.vercel.app/",
+    icons: {
+      React: "FaReact",
+      Express: "SiExpress",
+      NodeJs: "FaNodeJs",
+      MongoDB: "SiMongodb",
+    },
+  },
+   {
+    title: "Fahad Blogs",
+    description:
+      "I developed a dynamic personal blog using the MERN stack, emphasizing both front-end interactivity with React and robust back-end functionality with Node.js and MongoDB. This project features user authentication for commenting, ensuring a secure and engaging experience. Incorporating a search functionality further enhances usability, showcasing my ability to create responsive and functional web applications.",
+    languages: ["React", "Express", "NodeJs", "MongoDB"],
+    image: "/blogs.png", // Make sure the image is placed correctly in public/images
+    githubLink: "https://github.com/mdfahad-khan/Fahad-Blog-Mern",
+    liveLink: "https://fahad-blog1.vercel.app/",
+    icons: {
+      React: "FaReact",
+      Express: "SiExpress",
+      NodeJs: "FaNodeJs",
+      MongoDB: "SiMongodb",
+    },
+  },
+  {
+    title: "Nature Lease a inovative solution",
+    description:
+      "Experience a dynamic online marketplace powered by TypeScript, Tailwind CSS, Nest.js, and Next.js. Seamlessly connecting buyers and sellers of farm-related products and prime land parcels. With distinct user roles including Admin, Manager, Seller, and User, the platform offers a streamlined experience. Featuring a captivating landing page showcasing farm equipment and enticing land listings. Dive into the demo via the project link to witness its functionality firsthand",
+    languages: ["NextJs", "NestJs", "Postgresql", "TailwindCSS"],
+    image: "/naturelease.png", // Make sure the image is placed correctly in public/images
+    githubLink: "https://github.com/mdfahad-khan/NatureLease-Nextjs-Nestjs",
+    liveLink: "https://naturelease-ten.vercel.app/",
+    icons: {
+      NextJs: "SiNextdotjs",
+      NestJs: "SiNestjs",
+      Postgresql: "SiPostgresql",
+      TailwindCSS: "SiTailwindcss",
+    },
+  },
+  {
+    title: "FoodHub Food ordering website",
+    description:
+      "I developed a user-friendly restaurant food ordering platform that makes browsing the menu, selecting dishes, and placing orders simple and convenient. With a clean, responsive design, real-time order updates, and secure payment options, the website ensures a smooth and enjoyable online dining experience for customers on any device.",
     languages: ["NextJs", "TailwindCSS"],
-    image: "/ceramic.png", // Make sure the image is placed correctly in public/images
+    image: "/foodhub.png", // Make sure the image is placed correctly in public/images
     githubLink: "",
-    liveLink: "https://ceramicandfoodproducts.com/",
+    liveLink: "https://food-hub-plum.vercel.app/",
     icons: {
       NextJs: "SiNextdotjs",
       TailwindCSS: "SiTailwindcss",
@@ -21,34 +105,6 @@ const projectData = [
     image: "/green.png", // Make sure the image is placed correctly in public/images
     githubLink: "",
     liveLink: "https://green-busket.vercel.app/",
-    icons: {
-      NextJs: "SiNextdotjs",
-      TailwindCSS: "SiTailwindcss",
-    },
-  },
-  {
-    title: "E-commerce Website MERN Stack",
-    description:
-      "Experience a robust e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js). This website features secure user authentication, role-based access, and a comprehensive admin dashboard. Sellers can manage their products and inventory seamlessly, while buyers enjoy a smooth shopping experience with advanced search and filter options. The platform also integrates payment gateways and Cloudinary for image storage, ensuring a responsive and efficient user experience.",
-    languages: ["React", "Express", "NodeJs", "MongoDB"],
-    image: "/project1.png", // Make sure the image is placed correctly in public/images
-    githubLink: "https://github.com/mdfahad-khan/Ecommerce-MERN",
-    liveLink: "https://ecommerce-gadget360.vercel.app/",
-    icons: {
-      React: "FaReact",
-      Express: "SiExpress",
-      NodeJs: "FaNodeJs",
-      MongoDB: "SiMongodb",
-    },
-  },
-  {
-    title: "FoodHub Food ordering website",
-    description:
-      "I developed a user-friendly restaurant food ordering platform that makes browsing the menu, selecting dishes, and placing orders simple and convenient. With a clean, responsive design, real-time order updates, and secure payment options, the website ensures a smooth and enjoyable online dining experience for customers on any device.",
-    languages: ["NextJs", "TailwindCSS"],
-    image: "/foodhub.png", // Make sure the image is placed correctly in public/images
-    githubLink: "",
-    liveLink: "https://food-hub-plum.vercel.app/",
     icons: {
       NextJs: "SiNextdotjs",
       TailwindCSS: "SiTailwindcss",
@@ -69,33 +125,18 @@ const projectData = [
       TailwindCSS: "SiTailwindcss",
     },
   },
-  {
-    title: "Fahad Blogs",
+ 
+  
+   {
+    title: "Ceramic and Food Products E-commerce",
     description:
-      "I developed a dynamic personal blog using the MERN stack, emphasizing both front-end interactivity with React and robust back-end functionality with Node.js and MongoDB. This project features user authentication for commenting, ensuring a secure and engaging experience. Incorporating a search functionality further enhances usability, showcasing my ability to create responsive and functional web applications.",
-    languages: ["React", "Express", "NodeJs", "MongoDB"],
-    image: "/blogs.png", // Make sure the image is placed correctly in public/images
-    githubLink: "https://github.com/mdfahad-khan/Fahad-Blog-Mern",
-    liveLink: "https://fahad-blog-npo4.onrender.com/",
-    icons: {
-      React: "FaReact",
-      Express: "SiExpress",
-      NodeJs: "FaNodeJs",
-      MongoDB: "SiMongodb",
-    },
-  },
-  {
-    title: "Nature Lease a inovative solution",
-    description:
-      "Experience a dynamic online marketplace powered by TypeScript, Tailwind CSS, Nest.js, and Next.js. Seamlessly connecting buyers and sellers of farm-related products and prime land parcels. With distinct user roles including Admin, Manager, Seller, and User, the platform offers a streamlined experience. Featuring a captivating landing page showcasing farm equipment and enticing land listings. Dive into the demo via the project link to witness its functionality firsthand",
-    languages: ["NextJs", "NestJs", "Postgresql", "TailwindCSS"],
-    image: "/naturelease.png", // Make sure the image is placed correctly in public/images
-    githubLink: "https://github.com/mdfahad-khan/NatureLease-Nextjs-Nestjs",
-    liveLink: "https://nature-lease-zeta.vercel.app/",
+      "I developed a modern and responsive e-commerce website for a ceramic food product brand using Next.js, Tailwind CSS, and ShadCN UI. The platform features a dynamic product catalog, high-quality image displays, and an intuitive navigation system, ensuring customers can easily browse and purchase products. With a minimalist design that highlights the elegance of ceramic foodware, the site is optimized for performance, SEO, and accessibility, delivering a seamless shopping experience across all devices.",
+    languages: ["NextJs", "TailwindCSS"],
+    image: "/ceramic.png", // Make sure the image is placed correctly in public/images
+    githubLink: "",
+    liveLink: "https://ceramicandfoodproducts.com/",
     icons: {
       NextJs: "SiNextdotjs",
-      NestJs: "SiNestjs",
-      Postgresql: "SiPostgresql",
       TailwindCSS: "SiTailwindcss",
     },
   },
