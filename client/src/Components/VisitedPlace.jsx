@@ -86,7 +86,7 @@ const VisitedPlace = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
       {travels.map((place, index) => {
         const id = place._id || place.id || index;
         const imgSrc = place.images?.[0];
@@ -96,7 +96,7 @@ const VisitedPlace = () => {
         return (
           <motion.div
             key={id}
-            className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
+            className="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-shadow duration-300"
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
