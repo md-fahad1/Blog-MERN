@@ -105,3 +105,37 @@ export const updatepost = async (req, res, next) => {
     next(error);
   }
 };
+
+export const likePost = async (req, res, next) => {
+  try {
+    let anonId = req.cookies.anon_id;
+    if (!anonId) {
+      anonId = crypto.randomUUID();
+      res.cookie("anon_id", anonId, {
+        httpOnly: false, // frontend needs to read this to know "did I like this?"
+        secure: true,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      });
+    }
+
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      return next(errorHandler(404, "Post not found"));
+    }
+
+    const likerId = req.user ? req.user.id : anonId;
+    const userIndex = post.likes.indexOf(likerId);
+    if (userIndex === -1) {
+      post.numberOfLikes += 1;
+      post.likes.push(likerId);
+    } else {
+      post.numberOfLikes -= 1;
+      post.likes.splice(userIndex, 1);
+    }
+    await post.save();
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};

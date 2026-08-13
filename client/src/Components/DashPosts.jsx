@@ -1,11 +1,15 @@
-import { Modal, Button } from "flowbite-react";
+import { Modal, Button, FileInput, Select, TextInput, Alert } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { HiOutlineExclamationCircle, HiOutlinePlus } from "react-icons/hi";
 import { IoTrashOutline } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { compressImage } from "../../utils/imageCompressor";
 
 const CATEGORY_DOT = {
   coding: "bg-[#FF6B4A]",
@@ -22,17 +26,44 @@ const CATEGORY_LABEL = {
 };
 
 function Skeleton({ className }) {
-  return <div className={`animate-pulse rounded-lg bg-slate-100 dark:bg-white/5 ${className}`} />;
+  return (
+    <div
+      className={`animate-pulse rounded-lg bg-slate-100 dark:bg-white/5 ${className}`}
+    />
+  );
 }
+
+const emptyForm = {
+  title: "",
+  category: "uncategorized",
+  image: "",
+  content: "",
+};
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [postIdToDelete, setPostIdToDelete] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // ---- delete modal ----
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState("");
+
+  // ---- create / update modal ----
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [editingId, setEditingId] = useState(null); // null => create mode
+  const [formData, setFormData] = useState(emptyForm);
+  const [formLoading, setFormLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
+  const [publishError, setPublishError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const isEditMode = editingId !== null;
+
+  // -------- Fetch posts --------
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -44,9 +75,7 @@ export default function DashPosts() {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
-          if (data.posts.length < 9) {
-            setShowMore(false);
-          }
+          if (data.posts.length < 9) setShowMore(false);
         }
       } catch (error) {
         console.log(error.message);
@@ -71,17 +100,16 @@ export default function DashPosts() {
       const data = await res.json();
       if (res.ok) {
         setUserPosts((prev) => [...prev, ...data.posts]);
-        if (data.posts.length < 9) {
-          setShowMore(false);
-        }
+        if (data.posts.length < 9) setShowMore(false);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
 
+  // -------- Delete --------
   const handleDeletePost = async () => {
-    setShowModal(false);
+    setShowDeleteModal(false);
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
@@ -95,6 +123,134 @@ export default function DashPosts() {
       }
     } catch (error) {
       console.log(error.message);
+    }
+  };
+
+  // -------- Open modal helpers --------
+  const resetFormState = () => {
+    setFormData(emptyForm);
+    setFile(null);
+    setImageUploadProgress(null);
+    setImageUploadError(null);
+    setPublishError(null);
+  };
+
+  const openCreateModal = () => {
+    setEditingId(null);
+    resetFormState();
+    setShowFormModal(true);
+  };
+
+  const openEditModal = async (post) => {
+    setEditingId(post._id);
+    resetFormState();
+    setShowFormModal(true);
+    setFormLoading(true);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/post/getposts?postId=${post._id}`,
+        { credentials: "include" }
+      );
+      const data = await res.json();
+      if (res.ok && data.posts?.[0]) {
+        const p = data.posts[0];
+        setFormData({
+          title: p.title || "",
+          category: p.category || "uncategorized",
+          image: p.image || "",
+          content: p.content || "",
+        });
+      } else {
+        // fall back to the row data we already have
+        setFormData({
+          title: post.title || "",
+          category: post.category || "uncategorized",
+          image: post.image || "",
+          content: post.content || "",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const closeFormModal = () => {
+    if (submitting) return;
+    setShowFormModal(false);
+    setEditingId(null);
+    resetFormState();
+  };
+
+  // -------- Image upload (backend /api/upload — same as travel posts) --------
+  const handleUploadImage = async () => {
+    if (!file) {
+      setImageUploadError("Please select an image");
+      return;
+    }
+    setImageUploadError(null);
+    setImageUploadProgress(0);
+    try {
+      const compressedFile = await compressImage(file);
+      const formDataUpload = new FormData();
+      formDataUpload.append("images", compressedFile);
+
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
+        method: "POST",
+        body: formDataUpload,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Upload failed");
+
+      setImageUploadProgress(100);
+      setFormData((prev) => ({ ...prev, image: data.images[0] }));
+      setFile(null);
+      setTimeout(() => setImageUploadProgress(null), 400);
+    } catch (error) {
+      console.error("Upload error:", error.message);
+      setImageUploadError(error.message || "Image upload failed");
+      setImageUploadProgress(null);
+    }
+  };
+
+  // -------- Submit (create or update) --------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setPublishError(null);
+    setSubmitting(true);
+    try {
+      const url = isEditMode
+        ? `${import.meta.env.VITE_API_URL}/api/post/updatepost/${editingId}/${currentUser._id}`
+        : `${import.meta.env.VITE_API_URL}/api/post/create`;
+
+      const res = await fetch(url, {
+        method: isEditMode ? "PUT" : "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+
+      if (isEditMode) {
+        setUserPosts((prev) =>
+          prev.map((p) => (p._id === editingId ? { ...p, ...data } : p))
+        );
+      } else {
+        setUserPosts((prev) => [data, ...prev]);
+      }
+
+      setShowFormModal(false);
+      setEditingId(null);
+      resetFormState();
+    } catch (error) {
+      setPublishError("Something went wrong");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -112,16 +268,15 @@ export default function DashPosts() {
             </h1>
           </div>
           {currentUser?.isAdmin && (
-            <Link to="/create-post" className="self-start sm:self-auto">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 bg-[#2B2140] text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm shadow-lg shadow-[#2B2140]/20 whitespace-nowrap"
-              >
-                <HiOutlinePlus className="text-base sm:text-lg" />
-                Create a post
-              </motion.button>
-            </Link>
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={openCreateModal}
+              className="self-start sm:self-auto flex items-center gap-2 bg-[#2B2140] text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm shadow-lg shadow-[#2B2140]/20 whitespace-nowrap"
+            >
+              <HiOutlinePlus className="text-base sm:text-lg" />
+              Create a post
+            </motion.button>
           )}
         </div>
 
@@ -146,12 +301,12 @@ export default function DashPosts() {
                 : "You have no posts yet!"}
             </p>
             {currentUser?.isAdmin && (
-              <Link
-                to="/create-post"
+              <button
+                onClick={openCreateModal}
                 className="text-sm font-semibold text-[#FF6B4A] hover:text-[#e55a3a] transition-colors"
               >
                 Write your first post →
-              </Link>
+              </button>
             )}
           </div>
         ) : (
@@ -177,21 +332,26 @@ export default function DashPosts() {
                   </span>
 
                   <div className="flex items-center gap-3 md:contents">
-                    <Link to={`/post/${post.slug}`} className="flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(post)}
+                      className="flex-shrink-0"
+                    >
                       <img
                         src={post.image}
                         alt={post.title}
                         className="w-16 h-10 sm:w-20 sm:h-11 rounded-lg sm:rounded-xl object-cover bg-slate-100"
                       />
-                    </Link>
+                    </button>
 
                     <div className="min-w-0 flex-1 md:hidden">
-                      <Link
-                        to={`/post/${post.slug}`}
-                        className="font-semibold text-sm text-[#2B2140] dark:text-white truncate block"
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(post)}
+                        className="font-semibold text-sm text-[#2B2140] dark:text-white truncate block text-left"
                       >
                         {post.title}
-                      </Link>
+                      </button>
                       <div className="flex items-center gap-2 mt-1">
                         <span
                           className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
@@ -209,12 +369,13 @@ export default function DashPosts() {
                     </div>
                   </div>
 
-                  <Link
-                    to={`/post/${post.slug}`}
-                    className="hidden md:block font-medium text-sm text-[#2B2140] dark:text-white truncate"
+                  <button
+                    type="button"
+                    onClick={() => openEditModal(post)}
+                    className="hidden md:block font-medium text-sm text-[#2B2140] dark:text-white truncate text-left"
                   >
                     {post.title}
-                  </Link>
+                  </button>
 
                   <span
                     className={`hidden md:inline-flex w-fit items-center px-2.5 py-1 rounded-full text-[11px] font-medium capitalize ${
@@ -225,16 +386,16 @@ export default function DashPosts() {
                   </span>
 
                   <div className="flex items-center gap-2 self-end md:self-auto md:justify-end">
-                    <Link
-                      to={`/update-post/${post._id}`}
+                    <button
+                      onClick={() => openEditModal(post)}
                       className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-[#F7F5F2] hover:text-[#2B2140] dark:hover:bg-white/5 dark:hover:text-white transition-colors"
                       title="Edit"
                     >
                       <CiEdit className="text-lg" />
-                    </Link>
+                    </button>
                     <button
                       onClick={() => {
-                        setShowModal(true);
+                        setShowDeleteModal(true);
                         setPostIdToDelete(post._id);
                       }}
                       className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-rose-50 hover:text-rose-500 dark:hover:bg-rose-500/10 transition-colors"
@@ -260,7 +421,7 @@ export default function DashPosts() {
       </div>
 
       {/* Delete confirmation modal */}
-      <Modal show={showModal} onClose={() => setShowModal(false)} popup size="md">
+      <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)} popup size="md">
         <Modal.Header />
         <Modal.Body>
           <div className="text-center py-2">
@@ -275,12 +436,150 @@ export default function DashPosts() {
               <Button color="failure" onClick={handleDeletePost}>
                 Yes, delete it
               </Button>
-              <Button color="gray" onClick={() => setShowModal(false)}>
+              <Button color="gray" onClick={() => setShowDeleteModal(false)}>
                 Cancel
               </Button>
             </div>
           </div>
         </Modal.Body>
+      </Modal>
+
+      {/* Create / Update modal */}
+      <Modal
+        show={showFormModal}
+        onClose={closeFormModal}
+        size="3xl"
+        dismissible={!submitting}
+        className="[&>div]:items-end sm:[&>div]:items-center"
+      >
+        <Modal.Header>
+          <span className="text-[#2B2140] font-semibold">
+            {isEditMode ? "✏️ Update post" : "📝 Create a post"}
+          </span>
+        </Modal.Header>
+
+        {/* max-h keeps the modal usable on short mobile viewports; only the body scrolls */}
+        <Modal.Body className="max-h-[75vh] overflow-y-auto">
+          {formLoading ? (
+            <div className="space-y-3 py-6">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-40 w-full" />
+              <Skeleton className="h-32 w-full" />
+            </div>
+          ) : (
+            <form
+              id="post-form"
+              className="flex flex-col gap-4"
+              onSubmit={handleSubmit}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row justify-between">
+                <TextInput
+                  type="text"
+                  placeholder="Title"
+                  required
+                  className="flex-1"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, title: e.target.value }))
+                  }
+                />
+                <Select
+                  value={formData.category}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, category: e.target.value }))
+                  }
+                  className="sm:w-56"
+                >
+                  <option value="uncategorized">Select a category</option>
+                  <option value="coding">Coding</option>
+                  <option value="traveling">Traveling</option>
+                  <option value="study">Study</option>
+                </Select>
+              </div>
+
+              {/* Image upload — same Firebase flow as before */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center justify-between border-4 border-teal-500 border-dotted p-3 rounded-xl">
+                <FileInput
+                  type="file"
+                  accept="image/*"
+                  className="w-full"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+                <Button
+                  type="button"
+                  gradientDuoTone="purpleToBlue"
+                  size="sm"
+                  outline
+                  onClick={handleUploadImage}
+                  disabled={imageUploadProgress !== null}
+                  className="flex-shrink-0"
+                >
+                  {imageUploadProgress ? (
+                    <div className="w-14 h-14 sm:w-16 sm:h-16">
+                      <CircularProgressbar
+                        value={imageUploadProgress}
+                        text={`${imageUploadProgress || 0}%`}
+                      />
+                    </div>
+                  ) : (
+                    "Upload image"
+                  )}
+                </Button>
+              </div>
+
+              {imageUploadError && (
+                <Alert color="failure">{imageUploadError}</Alert>
+              )}
+
+              {formData.image && (
+                <img
+                  src={formData.image}
+                  alt="upload"
+                  className="w-full h-48 sm:h-72 rounded-xl object-cover"
+                />
+              )}
+
+              <div className="border rounded-xl overflow-hidden">
+                <ReactQuill
+                  theme="snow"
+                  value={formData.content}
+                  placeholder="Write something..."
+                  className="h-48 sm:h-64"
+                  onChange={(value) =>
+                    setFormData((prev) => ({ ...prev, content: value }))
+                  }
+                />
+              </div>
+
+              {publishError && (
+                <Alert className="mt-10 sm:mt-3" color="failure">
+                  {publishError}
+                </Alert>
+              )}
+            </form>
+          )}
+        </Modal.Body>
+
+        {/* Sticky footer keeps the submit action reachable on small screens */}
+        <Modal.Footer className="flex justify-end gap-2 border-t border-slate-100">
+          <Button color="gray" onClick={closeFormModal} disabled={submitting}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            form="post-form"
+            gradientDuoTone="purpleToPink"
+            disabled={submitting || formLoading}
+          >
+            {submitting
+              ? isEditMode
+                ? "Saving..."
+                : "Publishing..."
+              : isEditMode
+              ? "💾 Update post"
+              : "🚀 Publish"}
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );

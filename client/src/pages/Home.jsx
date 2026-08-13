@@ -368,37 +368,40 @@ export default function Home() {
         <VisitedPlace />
       </div>
 
-      {/* Latest posts */}
+
       <div className="max-w-full mx-auto p-3 flex flex-col py-6">
         {posts && posts.length > 0 && (
           <div className="flex flex-col gap-6">
             <div className="md:px-5">
               <SectionHeading eyebrow="From the blog" title="Latest Posts" />
             </div>
-            <div className="md:px-5 flex flex-row px-2 gap-0">
-              <div className="w-full md:w-2/3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 md:gap-4">
+            <div className="md:px-5 flex flex-col lg:flex-row gap-6">
+              {/* Feed — 1 col mobile, 3 col from md up */}
+              <div className="w-full lg:w-2/3 flex flex-col gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {posts.map((post) => (
                     <PostCardVertical key={post._id} post={post} />
                   ))}
                 </div>
                 <Link
                   to="/search"
-                  className="inline-flex items-center gap-1.5 text-lg text-center text-pink-500 hover:text-pink-600 dark:hover:text-pink-400 mt-4 font-medium transition-colors"
+                  className="inline-flex items-center justify-center gap-1.5 text-sm text-center text-pink-500 hover:text-pink-600 dark:hover:text-pink-400 mt-2 font-semibold transition-colors border border-pink-200 dark:border-pink-500/20 rounded-full py-2.5 hover:bg-pink-50 dark:hover:bg-pink-500/10"
                 >
                   View all posts
-                  <FaArrowRight className="text-sm" />
+                  <FaArrowRight className="text-xs" />
                 </Link>
               </div>
-              <div className="w-full md:w-1/3 hidden md:block">
-                <div className="hidden md:block w-full">
+
+              {/* Sidebar */}
+              <div className="w-full lg:w-1/3 hidden lg:block">
+                <div className="hidden lg:block w-full sticky top-20">
                   <Aboutme />
-                </div>
-                <div className="hidden md:block mt-10">
-                  <ShowRecentPost />
-                </div>
-                <div className="hidden md:block mt-10">
-                  <MeOnFB />
+                  <div className="mt-6">
+                    <ShowRecentPost />
+                  </div>
+                  <div className="mt-6">
+                    <MeOnFB />
+                  </div>
                 </div>
               </div>
             </div>

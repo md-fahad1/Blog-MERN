@@ -10,12 +10,6 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import ScrollToTop from "./Components/ScrollToTop";
 
-import CreatePost from "./pages/CreatePost";
-import UpdatePost from "./pages/UpdatePost";
-
-import CreateTravelPost from "./pages/CreateTravelPost";
-import UpdateTravel from "./pages/UpdateTravel";
-
 import PostPage from "./pages/PostPage";
 import TravelPost from "./pages/TravelPost";
 
@@ -56,25 +50,6 @@ const App = () => {
           }
         />
 
-        <Route
-          path="/create-travelpost"
-          element={
-            <VerifyToken>
-              <CreateTravelPost />
-            </VerifyToken>
-          }
-        />
-
-        {/* ✅ Move UpdateTravel here */}
-        <Route
-          path="/update-travel/:travelId"
-          element={
-            <VerifyToken>
-              <UpdateTravel />
-            </VerifyToken>
-          }
-        />
-
         {/* ================= ADMIN ROUTES ================= */}
 
         <Route
@@ -84,8 +59,6 @@ const App = () => {
             </VerifyToken>
           }
         >
-          <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/update-post/:postId" element={<UpdatePost />} />
           <Route path="/fb" element={<DashFb />} />
           <Route path="/create-fb" element={<CreateFb />} />
         </Route>

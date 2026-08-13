@@ -1,28 +1,48 @@
 import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+
+const CATEGORY_STYLE = {
+  coding: "text-blue-700 bg-blue-50 border border-blue-200",
+  traveling: "text-emerald-700 bg-emerald-50 border border-emerald-200",
+  study: "text-amber-700 bg-amber-50 border border-amber-200",
+  uncategorized: "text-gray-600 bg-gray-50 border border-gray-200",
+};
 
 export default function PostCard({ post }) {
   return (
-    <div className="relative border border-teal-500 hover:border-2 rounded-lg w-full max-w-[350px] overflow-hidden transition-all">
-      <Link to={`/post/${post.slug}`}>
-        <img
-          src={post.image}
-          alt="post cover"
-          className="h-[260px] w-full  object-cover group-hover:h-[200px] transition-all duration-300 z-20"
-        />
+    <div className="group bg-white dark:bg-gray-800 w-full rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <Link to={`/post/${post.slug}`} className="block relative">
+        <div className="h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
+          <img
+            src={post.image}
+            alt="post cover"
+            className="h-full w-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        {post.category && (
+          <span
+            className={`absolute top-2.5 left-2.5 text-[10px] font-medium uppercase tracking-wide px-2 py-1 rounded ${
+              CATEGORY_STYLE[post.category] || CATEGORY_STYLE.uncategorized
+            }`}
+          >
+            {post.category}
+          </span>
+        )}
       </Link>
-      <div className="p-2 flex flex-col gap-1">
-        <p className="text-lg font-semibold line-clamp-1">{post.title}</p>
-        {post.title}
 
-        <span className="bg-[#FFCEA3] italic rounded-md py-1 px-3 w-20 font-semibold text-gray-700">
-          {post.category}
-        </span>
+      <div className="p-3.5">
+        <Link to={`/post/${post.slug}`}>
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            {post.title}
+          </h3>
+        </Link>
+
         <Link
           to={`/post/${post.slug}`}
-          className="z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-1 rounded-md !rounded-tl-none m-2"
+          className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
         >
-          {" "}
-          Read More
+          Read more
+          <FaArrowRight className="text-[10px] transition-transform duration-300 group-hover:translate-x-0.5" />
         </Link>
       </div>
     </div>
